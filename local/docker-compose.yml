@@ -1,0 +1,80 @@
+version: '3'
+services:
+  postgres-db:
+    image: postgres:13.1
+    container_name: postgres-db
+    env_file:
+      - database.env
+    volumes:
+      - ./db/data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+
+  pgadmin-web:
+    image: dpage/pgadmin4:4.28
+    container_name: pgadmin-web
+    restart: always
+    depends_on:
+      - postgres-db
+    links:
+      - "postgres-db:postgres-db"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: sankar.mm30@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8080:80"
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+
+  cp-zookeeper:
+    image: confluentinc/cp-zookeeper:5.3.1
+    container_name: cp-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
+
+  cp-kafka-1:
+    image: confluentinc/cp-kafka:5.3.1
+    container_name: cp-kafka-1
+    depends_on:
+      - cp-zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: cp-zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://cp-kafka-1:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+
+  cp-kafka-2:
+    image: confluentinc/cp-kafka:5.3.1
+    container_name: cp-kafka-2
+    depends_on:
+      - cp-zookeeper
+    ports:
+      - 9093:9093
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: cp-zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://cp-kafka-2:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+
+  cp-schema-registry:
+    image: confluentinc/cp-schema-registry:5.3.1
+    container_name: cp-schema-registry
+    depends_on:
+      - cp-zookeeper
+      - cp-kafka-1
+      - cp-kafka-2
+    ports:
+      - 8081:8081
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: cp-zookeeper:2181
+
+networks:
+  default:
+    driver: bridge
