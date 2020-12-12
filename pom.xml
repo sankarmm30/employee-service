@@ -22,6 +22,7 @@
         <logstash-encoder.version>6.4</logstash-encoder.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+        <javax-validation-api.version>2.0.1.Final</javax-validation-api.version>
     </properties>
 
     <dependencies>
@@ -74,6 +75,12 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
             <version>${logstash-encoder.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax-validation-api.version}</version>
         </dependency>
     </dependencies>
 
