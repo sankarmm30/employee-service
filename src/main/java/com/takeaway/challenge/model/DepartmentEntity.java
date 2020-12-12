@@ -37,7 +37,7 @@ public class DepartmentEntity implements Serializable {
     @SequenceGenerator(name = "seq_depart_id", sequenceName = "seq_department_id", schema = "emp", allocationSize = 1)
     private Long departId;
 
-    @Column(name = "sname", nullable = false)
+    @Column(name = "sname", nullable = false, length = 50)
     private String name;
 
     @Column(name = "tscreated_at")

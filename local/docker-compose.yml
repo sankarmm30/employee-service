@@ -23,7 +23,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgres
       PGADMIN_LISTEN_PORT: 80
     ports:
-      - "8080:80"
+      - "8050:80"
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
 

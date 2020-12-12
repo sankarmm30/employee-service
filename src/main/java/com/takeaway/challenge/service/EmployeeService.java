@@ -4,6 +4,8 @@ import com.takeaway.challenge.dto.request.EmployeeRequestDto;
 import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
 import com.takeaway.challenge.model.EmployeeEntity;
 
+import java.util.Optional;
+
 /**
  * This interface is in charge of managing the Employee data
  */
@@ -35,10 +37,18 @@ public interface EmployeeService {
     void deleteEmployeeById(final String employeeId);
 
     /**
-     * This method is in charge of fetching the Employee record based on employeeId.
+     * This method is in charge of fetching the Employee record by employeeId.
      *
      * @param employeeId
      * @return
      */
-    EmployeeEntity getEmployeeById(final String employeeId);
+    Optional<EmployeeEntity> getEmployeeById(final String employeeId);
+
+    /**
+     * This method is in charge of fetching the Employee record by email.
+     *
+     * @param email
+     * @return
+     */
+    Optional<EmployeeEntity> getEmployeeByEmail(final String email);
 }

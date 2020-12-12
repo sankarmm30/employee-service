@@ -38,13 +38,13 @@ public class EmployeeEntity implements Serializable {
     @SequenceGenerator(name = "seq_emp_id", sequenceName = "seq_employee_id", schema = "emp", allocationSize = 1)
     private Long employeeIdPk;
 
-    @Column(name= "semployee_id", nullable = false)
+    @Column(name= "semployee_id", nullable = false, length = 50)
     private String employeeId;
 
-    @Column(name= "semail", nullable = false)
+    @Column(name= "semail", nullable = false, length = 50)
     private String email;
 
-    @Column(name= "sname", nullable = false)
+    @Column(name= "sname", nullable = false, length = 120)
     private String name;
 
     @Column(name= "tsdateofbirth")

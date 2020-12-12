@@ -5,6 +5,7 @@ import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
 import com.takeaway.challenge.dto.response.DepartmentDto;
 import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
 import com.takeaway.challenge.dto.response.EmployeeResponseDto;
+import com.takeaway.challenge.exception.EmployeeNotFoundException;
 import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.service.EmployeeService;
 import org.slf4j.Logger;
@@ -45,6 +46,8 @@ public class EmployeeController {
 
         EmployeeEntity employeeEntity = this.employeeService.createEmployee(employeeRequestDto);
 
+        LOG.debug("Created the Employee. employeeId: {}", employeeEntity.getEmployeeId());
+
         return new ResponseEntity<>(
                 EmployeeResponseDto.builder()
                         .employeeId(employeeEntity.getEmployeeId())
@@ -58,6 +61,8 @@ public class EmployeeController {
 
         EmployeeEntity employeeEntity = this.employeeService.updateEmployee(employeeId, putEmployeeRequestDto);
 
+        LOG.debug("Updated the Employee data. employeeId: {}", employeeEntity.getEmployeeId());
+
         return ResponseEntity.ok(EmployeeResponseDto.builder()
                 .employeeId(employeeEntity.getEmployeeId())
                 .message(UPDATE_MESSAGE)
@@ -69,6 +74,8 @@ public class EmployeeController {
 
         this.employeeService.deleteEmployeeById(employeeId);
 
+        LOG.debug("Deleted the Employee data. employeeId: {}", employeeId.toLowerCase());
+
         return ResponseEntity.ok(EmployeeResponseDto.builder()
                 .employeeId(employeeId)
                 .message(DELETE_MESSAGE)
@@ -78,7 +85,8 @@ public class EmployeeController {
     @GetMapping(value = "/details", produces = "application/json", consumes = "application/json")
     public ResponseEntity<EmployeeDetailsResponseDto> getEmployeeDetails(final @RequestParam String employeeId) {
 
-        EmployeeEntity employeeEntity = this.employeeService.getEmployeeById(employeeId);
+        EmployeeEntity employeeEntity = this.employeeService.getEmployeeById(employeeId)
+                .orElseThrow(EmployeeNotFoundException::new);
 
         return ResponseEntity.ok(buildEmployeeDetailsResponse(employeeEntity));
     }
@@ -102,6 +110,8 @@ public class EmployeeController {
                         .departmentId(employeeEntity.getDepartmentEntity().getDepartId())
                         .name(employeeEntity.getDepartmentEntity().getName())
                         .build())
+                .createAt(employeeEntity.getCreatedAt())
+                .lastUpdatedAt(employeeEntity.getUpdatedAt())
                 .build();
     }
 }

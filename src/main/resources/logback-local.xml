@@ -7,13 +7,18 @@
 
     <!-- definition of appender STDOUT -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </layout>
     </appender>
 
     <logger name="ch.qos.logback" level="error"/>
 
-    <logger name="org.springframework" level="warn"/>
-
+    <logger name="org.springframework.transaction.support" level="info"/>
+    <logger name="org.springframework.transaction.interceptor" level="info"/>
+    <logger name="org.springframework.orm.jpa.JpaTransactionManager" level="info"/>
     <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="debug"/>
 
     <root level="INFO">
