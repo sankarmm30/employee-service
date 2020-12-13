@@ -4,7 +4,6 @@ import com.takeaway.challenge.dto.response.GenericExceptionResponse;
 import com.takeaway.challenge.exception.DepartmentNotFoundException;
 import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
 import com.takeaway.challenge.exception.EmployeeNotFoundException;
-import com.takeaway.challenge.exception.InvalidEmailIdException;
 import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
 import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -57,8 +56,8 @@ public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandle
      * @param request the HttpServletRequest
      * @return the response entity
      */
-    @ExceptionHandler({InvalidEmailIdException.class, EmailIdAlreadyExistsException.class})
-    public final ResponseEntity<GenericExceptionResponse> handleInvalidEmailIdException(
+    @ExceptionHandler(EmailIdAlreadyExistsException.class)
+    public final ResponseEntity<GenericExceptionResponse> handleEmailIdAlreadyExistsException(
             TakeAwayClientRuntimeException exception, HttpServletRequest request) {
 
         return new ResponseEntity<>(
