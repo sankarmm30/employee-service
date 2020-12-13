@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,7 +58,8 @@ public class EmployeeEntity implements Serializable {
     @Column(name = "tsupdated_at")
     private ZonedDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "idepart_id", nullable = false)
+    @NotFound(action = NotFoundAction.EXCEPTION)
     private DepartmentEntity departmentEntity;
 }

@@ -6,19 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Entity
 @Builder
@@ -45,10 +42,4 @@ public class DepartmentEntity implements Serializable {
 
     @Column(name = "tsupdated_at")
     private ZonedDateTime updatedAt;
-
-    @OneToMany(
-            fetch = FetchType.EAGER, mappedBy = "departmentEntity",
-            cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.REMOVE}
-    )
-    private List<EmployeeEntity> employeeEntities;
 }

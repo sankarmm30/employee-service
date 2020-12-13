@@ -1,5 +1,6 @@
 package com.takeaway.challenge.controller;
 
+import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.DepartmentRequestDto;
 import com.takeaway.challenge.dto.response.DepartmentResponseDto;
 import com.takeaway.challenge.model.DepartmentEntity;
@@ -21,8 +22,6 @@ public class DepartmentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DepartmentController.class);
 
-    private static final String CREATE_MESSAGE = "Department has been created";
-
     private DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
@@ -40,7 +39,7 @@ public class DepartmentController {
         return new ResponseEntity<>(
                 DepartmentResponseDto.builder()
                         .departmentId(departmentEntity.getDepartId())
-                        .message(CREATE_MESSAGE)
+                        .message(ApiResponseMessage.DEP_CREATE_MESSAGE.getValue())
                         .build(),
                 HttpStatus.CREATED);
     }

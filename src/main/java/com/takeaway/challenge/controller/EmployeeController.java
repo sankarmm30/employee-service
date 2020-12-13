@@ -1,5 +1,6 @@
 package com.takeaway.challenge.controller;
 
+import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.EmployeeRequestDto;
 import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
 import com.takeaway.challenge.dto.response.DepartmentDto;
@@ -30,10 +31,6 @@ public class EmployeeController {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
 
-    private static final String CREATE_MESSAGE = "Employee has been created";
-    private static final String UPDATE_MESSAGE = "Employee details have been updated";
-    private static final String DELETE_MESSAGE = "Employee has been deleted";
-
     private EmployeeService employeeService;
 
     public EmployeeController(final EmployeeService employeeService) {
@@ -51,7 +48,7 @@ public class EmployeeController {
         return new ResponseEntity<>(
                 EmployeeResponseDto.builder()
                         .employeeId(employeeEntity.getEmployeeId())
-                        .message(CREATE_MESSAGE).build()
+                        .message(ApiResponseMessage.EMP_CREATE_MESSAGE.getValue()).build()
                 , HttpStatus.CREATED);
     }
 
@@ -65,7 +62,7 @@ public class EmployeeController {
 
         return ResponseEntity.ok(EmployeeResponseDto.builder()
                 .employeeId(employeeEntity.getEmployeeId())
-                .message(UPDATE_MESSAGE)
+                .message(ApiResponseMessage.EMP_UPDATE_MESSAGE.getValue())
                 .build());
     }
 
@@ -78,7 +75,7 @@ public class EmployeeController {
 
         return ResponseEntity.ok(EmployeeResponseDto.builder()
                 .employeeId(employeeId)
-                .message(DELETE_MESSAGE)
+                .message(ApiResponseMessage.EMP_DELETE_MESSAGE.getValue())
                 .build());
     }
 
