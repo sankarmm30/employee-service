@@ -5,6 +5,8 @@ import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
 import com.takeaway.challenge.exception.DepartmentNotFoundException;
 import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
 import com.takeaway.challenge.exception.EmployeeNotFoundException;
+import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
+import com.takeaway.challenge.factory.ValidationFactoryService;
 import com.takeaway.challenge.model.DepartmentEntity;
 import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.repository.EmployeeEntityRepository;
@@ -26,23 +28,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeEntityRepository employeeEntityRepository;
     private DepartmentService departmentService;
+    private ValidationFactoryService validationFactoryService;
 
     public EmployeeServiceImpl(final EmployeeEntityRepository employeeEntityRepository,
-                               final DepartmentService departmentService) {
+                               final DepartmentService departmentService,
+                               final ValidationFactoryService validationFactoryService) {
 
         this.employeeEntityRepository = employeeEntityRepository;
         this.departmentService = departmentService;
+        this.validationFactoryService = validationFactoryService;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public EmployeeEntity createEmployee(EmployeeRequestDto employeeRequestDto) {
 
+        // Validating the input parameter
+        this.validationFactoryService.validObject(employeeRequestDto);
+
         // Validate if the email id is already exists
         if(getEmployeeByEmail(employeeRequestDto.getEmail()).isPresent()) {
 
             throw new EmailIdAlreadyExistsException();
-        };
+        }
 
         DepartmentEntity departmentEntity =
                 this.departmentService.getDepartmentById(employeeRequestDto.getDepartmentId())
@@ -50,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return this.employeeEntityRepository.save(
                 EmployeeEntity.builder()
-                        .employeeId(UUID.randomUUID().toString())
+                        .employeeId(UUID.randomUUID().toString())                //UUID version 4 is used
                         .name(employeeRequestDto.getName())
                         .email(employeeRequestDto.getEmail().toLowerCase())      //Email id will be stored in lower case
                         .dateOfBirth(employeeRequestDto.getDateOfBirth())
@@ -63,6 +71,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public EmployeeEntity updateEmployee(final String employeeId, final PutEmployeeRequestDto putEmployeeRequestDto) {
+
+        if(!StringUtils.hasText(employeeId)) {
+
+            throw new TakeAwayClientRuntimeException("The employeeId must not be null or empty for the update");
+        }
+
+        // Validating the input parameter
+        this.validationFactoryService.validObject(putEmployeeRequestDto);
 
         EmployeeEntity employeeEntity = getEmployeeById(employeeId).orElseThrow(EmployeeNotFoundException::new);
 
@@ -96,6 +112,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void deleteEmployeeById(final String employeeId) {
 
+        if(!StringUtils.hasText(employeeId)) {
+
+            throw new TakeAwayClientRuntimeException("The employeeId must not be null or empty for the delete");
+        }
+
         EmployeeEntity employeeEntity = getEmployeeById(employeeId).orElseThrow(EmployeeNotFoundException::new);
 
         this.employeeEntityRepository.delete(employeeEntity);
@@ -104,11 +125,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Optional<EmployeeEntity> getEmployeeById(final String employeeId) {
 
+        if(!StringUtils.hasText(employeeId)) {
+
+            return Optional.empty();
+        }
+
         return this.employeeEntityRepository.findByEmployeeId(employeeId.toLowerCase());
     }
 
     @Override
     public Optional<EmployeeEntity> getEmployeeByEmail(final String email) {
+
+        if(!StringUtils.hasText(email)) {
+
+            return Optional.empty();
+        }
 
         return this.employeeEntityRepository.findByEmail(email.toLowerCase());
     }
