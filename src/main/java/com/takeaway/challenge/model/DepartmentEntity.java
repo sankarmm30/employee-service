@@ -26,7 +26,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "department", schema = "emp")
+@Table(name = "department")
 public class DepartmentEntity implements Serializable {
 
     private static final long serialVersionUID = -7526472295622776147L;
@@ -34,7 +34,7 @@ public class DepartmentEntity implements Serializable {
     @Id
     @Column(name = "idepart_id", nullable = false)
     @GeneratedValue(generator = "seq_depart_id", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "seq_depart_id", sequenceName = "seq_department_id", schema = "emp", allocationSize = 1)
+    @SequenceGenerator(name = "seq_depart_id", sequenceName = "seq_department_id", allocationSize = 1)
     private Long departId;
 
     @Column(name = "sname", nullable = false, length = 50)

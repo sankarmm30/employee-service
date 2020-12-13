@@ -27,7 +27,7 @@ import java.time.ZonedDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "employee", schema = "emp")
+@Table(name = "employee")
 public class EmployeeEntity implements Serializable {
 
     private static final long serialVersionUID = -7526472295622776150L;
@@ -35,7 +35,7 @@ public class EmployeeEntity implements Serializable {
     @Id
     @Column(name = "iemployee_id_pk", nullable = false)
     @GeneratedValue(generator = "seq_emp_id", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "seq_emp_id", sequenceName = "seq_employee_id", schema = "emp", allocationSize = 1)
+    @SequenceGenerator(name = "seq_emp_id", sequenceName = "seq_employee_id", allocationSize = 1)
     private Long employeeIdPk;
 
     @Column(name= "semployee_id", nullable = false, length = 50)

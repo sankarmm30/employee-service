@@ -23,8 +23,8 @@
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
         <javax-validation-api.version>2.0.1.Final</javax-validation-api.version>
-        <jackson-datatype-hibernate5.version>2.9.5</jackson-datatype-hibernate5.version>
         <jackson-datatype-jdk8.version>2.11.3</jackson-datatype-jdk8.version>
+        <mockito.version>2.23.4</mockito.version>
     </properties>
 
     <dependencies>
@@ -93,6 +93,12 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jdk8</artifactId>
             <version>${jackson-datatype-jdk8.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
         </dependency>
     </dependencies>
 
