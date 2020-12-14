@@ -73,4 +73,20 @@ public class DepartmentControllerIntegrationTest {
         Assert.assertEquals(1, response.getBody().getErrors().size());
         Assert.assertEquals("Name cannot be blank", response.getBody().getErrors().get(0));
     }
+
+    @Test
+    public void testCreateDepartmentRequesrBodyIsNull() {
+
+        // Given
+        HttpEntity<DepartmentRequestDto> entity = new HttpEntity<DepartmentRequestDto>(null, HEADERS);
+
+        ResponseEntity<GenericExceptionResponse> response = restTemplate.exchange(
+                BASE_URL + port + CREATE_DEPART_URL, HttpMethod.POST, entity, GenericExceptionResponse.class);
+
+        // Result
+        Assert.assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCodeValue());
+        Assert.assertNotNull(response.getBody());
+        Assert.assertFalse(response.getBody().getErrors().isEmpty());
+        Assert.assertEquals(1, response.getBody().getErrors().size());
+    }
 }

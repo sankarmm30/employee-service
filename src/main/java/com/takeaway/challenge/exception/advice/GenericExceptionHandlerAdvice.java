@@ -10,6 +10,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 @RestController
 @ControllerAdvice
 public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
+
+    private static final String URI = "uri=";
 
     /**
      * Handling client related exception. Ex: employee or department not found, invalid email format
@@ -96,7 +99,32 @@ public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandle
                         .status(HttpStatus.BAD_REQUEST.value())
                         .errors(errorList)
                         .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                        .path(request.getDescription(false).replace("uri=", ""))
+                        .path(request.getDescription(false).replace(URI, ""))
+                        .build()
+                , HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handling HttpMessageNotReadable
+     *
+     * @param exception
+     * @param headers
+     * @param status
+     * @param request
+     * @return
+     */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException exception,
+                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  WebRequest request) {
+
+        return new ResponseEntity<>(
+                GenericExceptionResponse.builder()
+                        .timestamp(ZonedDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .errors(Collections.singletonList(exception.getMessage()))
+                        .message(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                        .path(request.getDescription(false).replace(URI, ""))
                         .build()
                 , HttpStatus.BAD_REQUEST);
     }

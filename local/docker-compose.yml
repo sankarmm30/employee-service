@@ -77,18 +77,18 @@ services:
       ALLOW_DELETION: 1
       PROXY: 1
 
-  cp-kafka-rest:
-    image: confluentinc/cp-kafka-rest:5.3.1
-    container_name: cp-kafka-rest
+  kafdrop-ui:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop-ui
+    hostname: kafdrop-ui
     ports:
-      - "8082:8082"
-    depends_on:
-      - cp-schema-registry
+      - 9100:9000
     environment:
-      KAFKA_REST_ZOOKEEPER_CONNECT: cp-zookeeper:2181
-      KAFKA_REST_SCHEMA_REGISTRY_URL: cp-schema-registry:8081
-      KAFKA_REST_HOST_NAME: cp-kafka-rest
-      KAFKA_REST_LISTENERS: http://cp-kafka-rest:8082
+      KAFKA_BROKERCONNECT: cp-kafka-1:9092
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      SCHEMAREGISTRY_CONNECT: http://cp-schema-registry:8081/
+    depends_on:
+        - cp-schema-registry
 
 networks:
   default:

@@ -47,6 +47,11 @@
               "doc": "The field holds the email of the employee and this is unique for the each employee"
             },
             {
+              "name": "departmentId",
+              "type": "long",
+              "doc": "The field holds the department id of the employee"
+            },
+            {
               "name": "dateOfBirth",
               "type": ["null", "string"],
               "doc": "The field holds the data of birth of the employee. Example: 1989-06-06"

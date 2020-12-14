@@ -18,8 +18,8 @@ public class EmployeeServiceApiJacksonContext {
     public ObjectMapper objectMapperBuilder() {
 
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-        builder.featuresToDisable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        builder.featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        builder.featuresToEnable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        builder.featuresToEnable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         ObjectMapper objectMapper = builder.build();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

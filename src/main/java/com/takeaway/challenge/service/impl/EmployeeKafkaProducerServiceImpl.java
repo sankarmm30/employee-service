@@ -92,6 +92,7 @@ public class EmployeeKafkaProducerServiceImpl implements KafkaProducerService {
                                 EmployeeEventData.newBuilder()
                                         .setName(employeeEntity.getName())
                                         .setEmail(employeeEntity.getEmail())
+                                        .setDepartmentId(employeeEntity.getDepartmentEntity().getDepartId())
                                         .setDateOfBirth(Util.getFormattedDate(employeeEntity.getDateOfBirth()))
                                         .setCreatedAt(Util.getFormattedTimestamp(employeeEntity.getCreatedAt()))
                                         .setUpdatedAt(Util.getFormattedTimestamp(employeeEntity.getUpdatedAt()))
