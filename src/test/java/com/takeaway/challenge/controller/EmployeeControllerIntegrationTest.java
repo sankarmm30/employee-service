@@ -9,12 +9,14 @@ import com.takeaway.challenge.model.DepartmentEntity;
 import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.repository.DepartmentEntityRepository;
 import com.takeaway.challenge.repository.EmployeeEntityRepository;
+import com.takeaway.challenge.service.KafkaProducerService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
@@ -60,6 +62,9 @@ public class EmployeeControllerIntegrationTest {
 
     @Autowired
     private EmployeeEntityRepository employeeEntityRepository;
+
+    @MockBean
+    private KafkaProducerService employeeKafkaProducerService;
 
     private DepartmentEntity departmentEntity;
     private EmployeeEntity employeeEntity;

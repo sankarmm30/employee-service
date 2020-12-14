@@ -1,5 +1,6 @@
 package com.takeaway.challenge.controller;
 
+import com.takeaway.challenge.EmployeeEventType;
 import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.EmployeeRequestDto;
 import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
@@ -9,6 +10,7 @@ import com.takeaway.challenge.dto.response.EmployeeResponseDto;
 import com.takeaway.challenge.exception.EmployeeNotFoundException;
 import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.service.EmployeeService;
+import com.takeaway.challenge.service.KafkaProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,10 +34,12 @@ public class EmployeeController {
     private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
 
     private EmployeeService employeeService;
+    private KafkaProducerService employeeKafkaProducerService;
 
-    public EmployeeController(final EmployeeService employeeService) {
+    public EmployeeController(final EmployeeService employeeService, final KafkaProducerService employeeKafkaProducerService) {
 
         this.employeeService = employeeService;
+        this.employeeKafkaProducerService = employeeKafkaProducerService;
     }
 
     @PostMapping(value = "/create", produces = "application/json", consumes = "application/json")
@@ -44,6 +48,8 @@ public class EmployeeController {
         EmployeeEntity employeeEntity = this.employeeService.createEmployee(employeeRequestDto);
 
         LOG.debug("Created the Employee. employeeId: {}", employeeEntity.getEmployeeId());
+
+        this.employeeKafkaProducerService.sendMessage(employeeEntity, EmployeeEventType.CREATED);
 
         return new ResponseEntity<>(
                 EmployeeResponseDto.builder()
@@ -60,6 +66,8 @@ public class EmployeeController {
 
         LOG.debug("Updated the Employee data. employeeId: {}", employeeEntity.getEmployeeId());
 
+        this.employeeKafkaProducerService.sendMessage(employeeEntity, EmployeeEventType.UPDATED);
+
         return ResponseEntity.ok(EmployeeResponseDto.builder()
                 .employeeId(employeeEntity.getEmployeeId())
                 .message(ApiResponseMessage.EMP_UPDATE_MESSAGE.getValue())
@@ -72,6 +80,10 @@ public class EmployeeController {
         this.employeeService.deleteEmployeeById(employeeId);
 
         LOG.debug("Deleted the Employee data. employeeId: {}", employeeId.toLowerCase());
+
+        this.employeeKafkaProducerService.sendMessage(
+                EmployeeEntity.builder().employeeId(employeeId.toLowerCase()).build(),
+                EmployeeEventType.DELETED);
 
         return ResponseEntity.ok(EmployeeResponseDto.builder()
                 .employeeId(employeeId)
