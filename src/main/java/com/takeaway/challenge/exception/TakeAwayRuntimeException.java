@@ -2,9 +2,6 @@ package com.takeaway.challenge.exception;
 
 public class TakeAwayRuntimeException extends RuntimeException {
 
-    public TakeAwayRuntimeException() {
-    }
-
     public TakeAwayRuntimeException(String message) {
         super(message);
     }
