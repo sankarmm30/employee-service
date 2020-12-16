@@ -6,6 +6,7 @@ import com.takeaway.challenge.exception.DepartmentNotFoundException;
 import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
 import com.takeaway.challenge.exception.EmployeeNotFoundException;
 import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
+import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
 import com.takeaway.challenge.factory.ValidationFactoryService;
 import com.takeaway.challenge.model.DepartmentEntity;
 import com.takeaway.challenge.model.EmployeeEntity;
@@ -109,6 +110,17 @@ public class EmployeeServiceImplTest {
                 .build());
     }
 
+    @Test(expected = TakeAwayServerRuntimeException.class)
+    public void testCreateEmployeeWhenUnexpectedException() {
+
+        Mockito.when(employeeEntityRepository.findByEmail(Mockito.eq(EMP_EMAIL))).thenReturn(Optional.empty());
+
+        Mockito.when(employeeEntityRepository.save(Mockito.any(EmployeeEntity.class)))
+                .thenThrow(new IllegalStateException("Test Exception"));
+
+        employeeService.createEmployee(getEmployeeRequestDto());
+    }
+
     @Test
     public void testUpdateEmployeeValid() {
 
@@ -152,8 +164,7 @@ public class EmployeeServiceImplTest {
         Mockito.when(employeeEntityRepository.findByEmail(Mockito.eq(EMP_EMAIL))).thenReturn(
                 Optional.of(EmployeeEntity.builder().employeeId(PUT_EMP_ID).build()));
 
-        EmployeeEntity employeeEntity = employeeService.updateEmployee(EMP_ID,
-                getPutEmployeeRequestDto(EMP_NAME, EMP_EMAIL, null, null));
+        employeeService.updateEmployee(EMP_ID, getPutEmployeeRequestDto(EMP_NAME, EMP_EMAIL, null, null));
     }
 
     @Test(expected = EmployeeNotFoundException.class)
@@ -192,6 +203,17 @@ public class EmployeeServiceImplTest {
         employeeService.updateEmployee(EMP_ID, getPutEmployeeRequestDto(null, null, null, DEPART_ID));
     }
 
+    @Test(expected = TakeAwayServerRuntimeException.class)
+    public void testUpdateEmployeeWhenUnexpectedException() {
+
+        Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
+
+        Mockito.when(employeeEntityRepository.save(Mockito.any(EmployeeEntity.class)))
+                .thenThrow(new IllegalStateException("Test Exception"));
+
+        employeeService.updateEmployee(EMP_ID, getPutEmployeeRequestDto(EMP_NAME, EMP_EMAIL, LocalDate.now(), DEPART_ID));
+    }
+
     @Test
     public void testDeleteEmployeeByIdValid() {
 
@@ -214,6 +236,17 @@ public class EmployeeServiceImplTest {
     public void testDeleteEmployeeByIdWhenInputEmployeeIdIsNull() {
 
         employeeService.deleteEmployeeById(null);
+    }
+
+    @Test(expected = TakeAwayServerRuntimeException.class)
+    public void testDeleteEmployeeByIdWhenUnexpectedException() {
+
+        Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
+
+        Mockito.doThrow(new IllegalStateException("Test Exception"))
+                .when(employeeEntityRepository).delete(Mockito.any(EmployeeEntity.class));
+
+        employeeService.deleteEmployeeById(EMP_ID);
     }
 
     @Test

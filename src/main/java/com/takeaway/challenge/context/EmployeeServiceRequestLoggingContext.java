@@ -9,7 +9,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
  * to the Commons Log.
  */
 @Configuration
-public class RequestLoggingContext {
+public class EmployeeServiceRequestLoggingContext {
 
     private static final String MESSAGE_PREFIX = "REQUEST DATA : ";
     private static final int MAX_PAYLOAD_LENGTH = 10000;

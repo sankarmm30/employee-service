@@ -47,7 +47,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: cp-zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://cp-kafka-1:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   cp-schema-registry:
     image: confluentinc/cp-schema-registry:5.3.1
