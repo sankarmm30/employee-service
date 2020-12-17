@@ -3,10 +3,11 @@ services:
   postgres-db:
     image: postgres:13.1
     container_name: postgres-db
-    env_file:
-      - database.env
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./db/data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: password123
     ports:
       - 5432:5432
 
@@ -19,7 +20,7 @@ services:
     links:
       - "postgres-db:postgres-db"
     environment:
-      PGADMIN_DEFAULT_EMAIL: sankar.mm30@gmail.com
+      PGADMIN_DEFAULT_EMAIL: postgrestest@gmail.com
       PGADMIN_DEFAULT_PASSWORD: postgres
       PGADMIN_LISTEN_PORT: 80
     ports:
