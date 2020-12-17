@@ -32,6 +32,7 @@
         <spring-kafka.version>2.5.7.RELEASE</spring-kafka.version>
         <base.package>com/takeaway/challenge</base.package>
         <spring-mock-mvc.version>3.3.0</spring-mock-mvc.version>
+        <springfox-swagger2.version>2.8.0</springfox-swagger2.version>
     </properties>
 
     <dependencies>
@@ -131,6 +132,19 @@
             <artifactId>kafka-avro-serializer</artifactId>
             <version>${kafka-avro-serializer.version}</version>
         </dependency>
+
+        <!-- Swagger Dependencies-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

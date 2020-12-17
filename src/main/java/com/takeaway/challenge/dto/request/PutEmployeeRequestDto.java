@@ -35,14 +35,14 @@ public class PutEmployeeRequestDto {
     private Long departmentId;
 
     @AssertTrue(message = "Minimum one attribute should be provided for the update")
-    public boolean isValid() {
+    private boolean isValid() {
 
         return StringUtils.hasText(name) || StringUtils.hasText(email)
                 || dateOfBirth != null || departmentId != null;
     }
 
     @AssertTrue(message = "Invalid name provided")
-    public boolean isValidNameWhenNotNull() {
+    private boolean isValidNameWhenNotNull() {
 
         if(Util.isNotNull(name)) {
 
@@ -53,7 +53,7 @@ public class PutEmployeeRequestDto {
     }
 
     @AssertTrue(message = "Invalid email provided")
-    public boolean isValidEmailWhenNotNull() {
+    private boolean isValidEmailWhenNotNull() {
 
         if(Util.isNotNull(email)) {
 
