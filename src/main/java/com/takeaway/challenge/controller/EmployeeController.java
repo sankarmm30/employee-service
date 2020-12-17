@@ -11,9 +11,12 @@ import com.takeaway.challenge.exception.EmployeeNotFoundException;
 import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.service.EmployeeService;
 import com.takeaway.challenge.service.KafkaProducerService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/employee")
+@Api(value = "Employee controller", description = "This controller provides endpoint for managing the employee of the company")
 public class EmployeeController {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
@@ -42,6 +46,9 @@ public class EmployeeController {
         this.employeeKafkaProducerService = employeeKafkaProducerService;
     }
 
+    @ApiOperation(value = "Create employee with the details provided",
+            response = EmployeeResponseDto.class, produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping(value = "/create", produces = "application/json", consumes = "application/json")
     public ResponseEntity<EmployeeResponseDto> createEmployee(final @Valid @RequestBody EmployeeRequestDto employeeRequestDto) {
 
@@ -58,7 +65,11 @@ public class EmployeeController {
                 , HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/update/{employeeId}", produces = "application/json", consumes = "application/json")
+    @ApiOperation(value = "Update employee with the details provided",
+            response = EmployeeResponseDto.class, produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeResponseDto> updateEmployee(final @PathVariable String employeeId,
                                                               final @Valid @RequestBody PutEmployeeRequestDto putEmployeeRequestDto) {
 
@@ -74,7 +85,9 @@ public class EmployeeController {
                 .build());
     }
 
-    @DeleteMapping(value = "/delete/{employeeId}", produces = "application/json", consumes = "application/json")
+    @ApiOperation(value = "Delete employee with the id provided",
+            response = EmployeeResponseDto.class, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeResponseDto> deleteEmployee(final @PathVariable String employeeId) {
 
         this.employeeService.deleteEmployeeById(employeeId);
@@ -91,7 +104,9 @@ public class EmployeeController {
                 .build());
     }
 
-    @GetMapping(value = "/details", produces = "application/json", consumes = "application/json")
+    @ApiOperation(value = "Get all details for the specific employee",
+            response = EmployeeDetailsResponseDto.class, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/details", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDetailsResponseDto> getEmployeeDetails(final @RequestParam String employeeId) {
 
         EmployeeEntity employeeEntity = this.employeeService.getEmployeeById(employeeId)

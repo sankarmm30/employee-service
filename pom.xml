@@ -32,7 +32,7 @@
         <spring-kafka.version>2.5.7.RELEASE</spring-kafka.version>
         <base.package>com/takeaway/challenge</base.package>
         <spring-mock-mvc.version>3.3.0</spring-mock-mvc.version>
-        <springfox-swagger2.version>2.8.0</springfox-swagger2.version>
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -114,6 +114,7 @@
             <version>${mockito.version}</version>
         </dependency>
 
+        <!-- rest-assured used for controller unit testing -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>spring-mock-mvc</artifactId>
@@ -133,16 +134,11 @@
             <version>${kafka-avro-serializer.version}</version>
         </dependency>
 
-        <!-- Swagger Dependencies-->
+        <!-- Swagger UI-->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${springfox-swagger2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-swagger2.version}</version>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${springfox-boot-starter.version}</version>
         </dependency>
 
     </dependencies>

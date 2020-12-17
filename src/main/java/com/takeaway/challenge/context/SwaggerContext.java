@@ -9,14 +9,12 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Configuration for Swagger 2
+ * Configuration for enabling Springfox swagger 2 and mentioning spring where to scan for API controllers
  *
  */
 @Configuration
-@EnableSwagger2
 public class SwaggerContext {
 
     private static final String PACKAGE = "com.takeaway.challenge.controller";
