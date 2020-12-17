@@ -33,6 +33,7 @@
         <base.package>com/takeaway/challenge</base.package>
         <spring-mock-mvc.version>3.3.0</spring-mock-mvc.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
+        <flyway.version>6.4.4</flyway.version>
     </properties>
 
     <dependencies>
@@ -139,6 +140,13 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>${springfox-boot-starter.version}</version>
+        </dependency>
+
+        <!-- Flyway Database Migration-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
         </dependency>
 
     </dependencies>

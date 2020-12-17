@@ -10,6 +10,7 @@ import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.repository.DepartmentEntityRepository;
 import com.takeaway.challenge.repository.EmployeeEntityRepository;
 import com.takeaway.challenge.service.KafkaProducerService;
+import org.flywaydb.core.Flyway;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +66,9 @@ public class EmployeeControllerIntegrationTest {
 
     @MockBean
     private KafkaProducerService employeeKafkaProducerService;
+
+    @MockBean
+    private Flyway flyway;
 
     private DepartmentEntity departmentEntity;
     private EmployeeEntity employeeEntity;

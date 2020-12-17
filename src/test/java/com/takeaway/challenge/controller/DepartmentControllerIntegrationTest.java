@@ -5,10 +5,12 @@ import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.DepartmentRequestDto;
 import com.takeaway.challenge.dto.response.DepartmentResponseDto;
 import com.takeaway.challenge.dto.response.GenericExceptionResponse;
+import org.flywaydb.core.Flyway;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
@@ -35,6 +37,9 @@ public class DepartmentControllerIntegrationTest {
     static {
         HEADERS.setContentType(MediaType.APPLICATION_JSON);
     }
+
+    @MockBean
+    private Flyway flyway;
 
     @LocalServerPort
     private Integer port;
