@@ -32,3 +32,5 @@ build/
 
 local/db/data/**
 local/pgadmin-data/**
+
+.DS_Store
