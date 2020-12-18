@@ -1,0 +1,15 @@
+version: '3'
+services:
+  employee-service:
+    image: takeaway/bob-challenge-employee-service:1.0.0
+    container_name: employee-service
+    ports:
+      - 8070:8070
+    environment:
+      - 'JAVA_OPTS= -Dlogging.config=classpath:logback-local.xml -Dspring.profiles.active=local'
+    networks:
+      - local_default
+
+networks:
+  local_default:
+    external: true
