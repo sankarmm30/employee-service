@@ -14,6 +14,22 @@
 
 ![Alt text](doc_source/db_model.png)
 
+- **Description**
+    - *Department*
+        - `idepart_id` - The identifier of the department and it is auto generated value.
+        - `sname` - Name of the department.
+        - `tscreated_at` - The timestamp when the department created.
+        - `tsupdated_at` - The timestamp when the department last updated.
+    - *Employee*
+        - `iemployee_id_pk` - This the primary key of the table and holds the auto generated value.
+        - `semployee_id` - The identifier of the employee in UUID format.
+        - `semail` - This fields stores the employee email.
+        - `sname` - This fields stores the name of the employee.
+        - `tsdateofbirth` - This fields stores the date of birth of the employee.
+        - `idepart_id` - This fields stores the department id which the employee belongs and this has foreign key relation with department entity.
+        - `tscreated_at` - The timestamp when the employee created.
+        - `tsupdated_at` - The timestamp when the employee last updated.     
+
 ### Setup Local Environment
 
 - *Ensure that below listed directories are empty,*
