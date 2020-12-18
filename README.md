@@ -87,11 +87,11 @@ mvn clean install -DskipTests
 - Build the docker image in local by executing the below command from project folder,
 
 ```bash
-docker build . --tag=sankarmanthiram/bob-challenge-employee-service:1.0.0
+docker build . --tag=takeaway/bob-challenge-employee-service:1.0.0
 
 # Please below command when you want to push the image to docker registry
 
-docker push sankarmanthiram/bob-challenge-employee-service:1.0.0
+docker push takeaway/bob-challenge-employee-service:1.0.0
 ```
 
 - Verify the docker image by executing `docker image ls`
