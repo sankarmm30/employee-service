@@ -1,0 +1,13 @@
+{
+  "type": "record",
+  "name": "EmployeeEventKey",
+  "namespace": "com.takeaway.challenge",
+  "doc": "Employee event key data model and description",
+  "fields": [
+    {
+      "name": "employeeId",
+      "type": "string",
+      "doc": "This field holds the unique ID of the Employee"
+    }
+  ]
+}

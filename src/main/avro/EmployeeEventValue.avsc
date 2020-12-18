@@ -1,0 +1,75 @@
+{
+  "type": "record",
+  "name": "EmployeeEventValue",
+  "namespace": "com.takeaway.challenge",
+  "doc": "Employee event value data model and description",
+  "fields": [
+    {
+      "name": "time",
+      "type": "string",
+      "doc": "Timestamp (RFC 3339) of when the occurrence happened. Example: 2020-12-13T03:28:48.645+0100"
+    },
+    {
+      "name": "type",
+      "type": {
+        "name": "EmployeeEventType",
+        "type": "enum",
+        "symbols": [
+          "CREATED",
+          "UPDATED",
+          "DELETED"
+        ]
+      },
+      "doc": "This field describes the action performed"
+    },
+    {
+      "name": "appName",
+      "type": "string",
+      "doc": "The identifier of the application which triggered the event"
+    },
+    {
+      "name": "data",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "EmployeeEventData",
+          "doc": "This model contains the employee attributes",
+          "fields": [
+            {
+              "name": "name",
+              "type": "string",
+              "doc": "The field holds the name of the employee"
+            },
+            {
+              "name": "email",
+              "type": "string",
+              "doc": "The field holds the email of the employee and this is unique for the each employee"
+            },
+            {
+              "name": "departmentId",
+              "type": "long",
+              "doc": "The field holds the department id of the employee"
+            },
+            {
+              "name": "dateOfBirth",
+              "type": ["null", "string"],
+              "doc": "The field holds the data of birth of the employee. Example: 1989-06-06"
+            },
+            {
+              "name": "createdAt",
+              "type": ["null", "string"],
+              "doc": "Timestamp (RFC 3339) of when the employee was created. Example: 2020-12-13T02:28:48.645+0100"
+            },
+            {
+              "name": "updatedAt",
+              "type": ["null", "string"],
+              "doc": "Timestamp (RFC 3339) of when the employee was last updated. Example: 2020-12-13T03:28:48.645+0100"
+            }
+          ]
+        }
+      ],
+      "doc": "The main data object of the employee event"
+    }
+  ]
+}
