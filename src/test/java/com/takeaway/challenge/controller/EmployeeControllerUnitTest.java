@@ -1,14 +1,15 @@
 package com.takeaway.challenge.controller;
 
-import com.takeaway.challenge.EmployeeEventType;
+import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.EmployeeRequestDto;
 import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
+import com.takeaway.challenge.dto.response.DepartmentDto;
+import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
+import com.takeaway.challenge.dto.response.EmployeeResponseDto;
 import com.takeaway.challenge.exception.DepartmentNotFoundException;
+import com.takeaway.challenge.exception.EmployeeNotFoundException;
 import com.takeaway.challenge.exception.advice.GenericExceptionHandlerAdvice;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.service.EmployeeService;
-import com.takeaway.challenge.service.KafkaProducerService;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.hamcrest.Matchers;
@@ -23,7 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.time.ZonedDateTime;
 
 @RunWith(JUnit4.class)
 public class EmployeeControllerUnitTest {
@@ -41,17 +42,12 @@ public class EmployeeControllerUnitTest {
 
     @Mock
     private EmployeeService employeeService;
-    @Mock
-    private KafkaProducerService employeeKafkaProducerService;
 
     @InjectMocks
-    private EmployeeController employeeController = new EmployeeController(employeeService, employeeKafkaProducerService);
+    private EmployeeController employeeController = new EmployeeController(employeeService);
 
     @InjectMocks
     private GenericExceptionHandlerAdvice genericExceptionHandlerAdvice;
-
-    @Mock
-    private EmployeeEntity employeeEntityMock;
 
     @Before
     public void init() {
@@ -60,16 +56,13 @@ public class EmployeeControllerUnitTest {
 
         RestAssuredMockMvc.standaloneSetup(employeeController, genericExceptionHandlerAdvice);
 
-        Mockito.when(employeeEntityMock.getEmployeeId()).thenReturn(EMPLOYEE_ID);
-        Mockito.when(employeeEntityMock.getDepartmentEntity()).thenReturn(getDepartmentEntity());
-
-        Mockito.doNothing().when(employeeKafkaProducerService).sendMessage(Mockito.any(EmployeeEntity.class),
-                Mockito.any(EmployeeEventType.class));
-        Mockito.when(employeeService.createEmployee(Mockito.any(EmployeeRequestDto.class))).thenReturn(employeeEntityMock);
-        Mockito.when(employeeService.updateEmployee(Mockito.anyString(),
-                Mockito.any(PutEmployeeRequestDto.class))).thenReturn(employeeEntityMock);
-        Mockito.doNothing().when(employeeService).deleteEmployeeById(Mockito.anyString());
-        Mockito.when(employeeService.getEmployeeById(Mockito.anyString())).thenReturn(Optional.of(employeeEntityMock));
+        Mockito.when(employeeService.createEmployeeAndGetResponse(Mockito.any(EmployeeRequestDto.class)))
+                .thenReturn(getEmployeeResponseDto(ApiResponseMessage.EMP_CREATE_MESSAGE.getValue()));
+        Mockito.when(employeeService.updateEmployeeAndGetResponse(Mockito.anyString(), Mockito.any(PutEmployeeRequestDto.class)))
+                .thenReturn(getEmployeeResponseDto(ApiResponseMessage.EMP_UPDATE_MESSAGE.getValue()));
+        Mockito.when(employeeService.deleteEmployeeByIdAndGetResponse(Mockito.anyString()))
+                .thenReturn(getEmployeeResponseDto(ApiResponseMessage.EMP_DELETE_MESSAGE.getValue()));
+        Mockito.when(employeeService.getEmployeeDetailsById(Mockito.anyString())).thenReturn(getEmployeeDetailsResponseDto());
     }
 
     @Test
@@ -112,7 +105,7 @@ public class EmployeeControllerUnitTest {
     @Test
     public void testCreateEmployeeWhenDepartmentNotFound() {
 
-        Mockito.when(employeeService.createEmployee(Mockito.any(EmployeeRequestDto.class)))
+        Mockito.when(employeeService.createEmployeeAndGetResponse(Mockito.any(EmployeeRequestDto.class)))
                 .thenThrow(new DepartmentNotFoundException());
 
         RestAssuredMockMvc.given()
@@ -173,14 +166,14 @@ public class EmployeeControllerUnitTest {
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .contentType(ContentType.JSON)
-                .body("", Matchers.aMapWithSize(2),
+                .body("", Matchers.aMapWithSize(7),
                         JSON_FIELD, Matchers.equalTo(EMPLOYEE_ID));
     }
 
     @Test
     public void testGetEmployeeDetailsWhenNoDataFound() {
 
-        Mockito.when(employeeService.getEmployeeById(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(employeeService.getEmployeeDetailsById(Mockito.anyString())).thenThrow(new EmployeeNotFoundException());
 
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -192,8 +185,26 @@ public class EmployeeControllerUnitTest {
                 .body("", Matchers.aMapWithSize(5));
     }
 
-    private DepartmentEntity getDepartmentEntity() {
+    private EmployeeDetailsResponseDto getEmployeeDetailsResponseDto() {
 
-        return DepartmentEntity.builder().departId(DEPART_ID).name(DEPART_NAME).build();
+        return EmployeeDetailsResponseDto.builder()
+                .employeeId(EMPLOYEE_ID)
+                .name(EMPLOYEE_NAME)
+                .email(EMPLOYEE_EMAIL)
+                .dataOfBirth(LocalDate.now())
+                .department(DepartmentDto.builder()
+                        .departmentId(DEPART_ID)
+                        .name(DEPART_NAME)
+                        .build())
+                .createAt(ZonedDateTime.now())
+                .lastUpdatedAt(ZonedDateTime.now())
+                .build();
+    }
+
+    private EmployeeResponseDto getEmployeeResponseDto(final String message) {
+
+        return EmployeeResponseDto.builder()
+                .employeeId(EMPLOYEE_ID)
+                .message(message).build();
     }
 }

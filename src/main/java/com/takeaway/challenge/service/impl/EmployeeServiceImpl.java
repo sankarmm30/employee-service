@@ -1,7 +1,12 @@
 package com.takeaway.challenge.service.impl;
 
+import com.takeaway.challenge.EmployeeEventType;
+import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.EmployeeRequestDto;
 import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
+import com.takeaway.challenge.dto.response.DepartmentDto;
+import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
+import com.takeaway.challenge.dto.response.EmployeeResponseDto;
 import com.takeaway.challenge.exception.DepartmentNotFoundException;
 import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
 import com.takeaway.challenge.exception.EmployeeNotFoundException;
@@ -13,6 +18,7 @@ import com.takeaway.challenge.model.EmployeeEntity;
 import com.takeaway.challenge.repository.EmployeeEntityRepository;
 import com.takeaway.challenge.service.DepartmentService;
 import com.takeaway.challenge.service.EmployeeService;
+import com.takeaway.challenge.service.KafkaProducerService;
 import com.takeaway.challenge.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,21 +41,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeEntityRepository employeeEntityRepository;
     private DepartmentService departmentService;
     private ValidationFactoryService validationFactoryService;
+    private KafkaProducerService employeeKafkaProducerService;
 
     public EmployeeServiceImpl(final EmployeeEntityRepository employeeEntityRepository,
                                final DepartmentService departmentService,
-                               final ValidationFactoryService validationFactoryService) {
+                               final ValidationFactoryService validationFactoryService,
+                               final KafkaProducerService employeeKafkaProducerService) {
 
         this.employeeEntityRepository = employeeEntityRepository;
         this.departmentService = departmentService;
         this.validationFactoryService = validationFactoryService;
+        this.employeeKafkaProducerService = employeeKafkaProducerService;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public EmployeeEntity createEmployee(EmployeeRequestDto employeeRequestDto) {
 
-        try{
+        try {
 
             // Validating the input parameter
             this.validationFactoryService.validObject(employeeRequestDto);
@@ -76,7 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                             .createdAt(ZonedDateTime.now())
                             .build()
             );
-        }catch (TakeAwayClientRuntimeException | ConstraintViolationException exception) {
+        } catch (TakeAwayClientRuntimeException | ConstraintViolationException exception) {
 
             throw exception;
 
@@ -86,6 +95,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             throw new TakeAwayServerRuntimeException("Unexpected error occurred", exception);
         }
+    }
+
+    @Override
+    public EmployeeResponseDto createEmployeeAndGetResponse(EmployeeRequestDto employeeRequestDto) {
+
+        EmployeeEntity employeeEntity = this.createEmployee(employeeRequestDto);
+
+        LOG.debug("Created the employee with id: {}", employeeEntity.getEmployeeId());
+
+        // Producing message into Kafka topic
+        this.employeeKafkaProducerService.sendMessage(employeeEntity, EmployeeEventType.CREATED);
+
+        return buildEmployeeResponseDto(employeeEntity.getEmployeeId(), ApiResponseMessage.EMP_CREATE_MESSAGE.getValue());
     }
 
     @Override
@@ -144,6 +166,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeResponseDto updateEmployeeAndGetResponse(String employeeId, PutEmployeeRequestDto putEmployeeRequestDto) {
+
+        EmployeeEntity employeeEntity = this.updateEmployee(employeeId, putEmployeeRequestDto);
+
+        LOG.debug("Updated the Employee data. employeeId: {}", employeeEntity.getEmployeeId());
+
+        // Producing message into Kafka topic
+        this.employeeKafkaProducerService.sendMessage(employeeEntity, EmployeeEventType.UPDATED);
+
+        return buildEmployeeResponseDto(employeeEntity.getEmployeeId(), ApiResponseMessage.EMP_UPDATE_MESSAGE.getValue());
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void deleteEmployeeById(final String employeeId) {
 
@@ -171,6 +206,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeResponseDto deleteEmployeeByIdAndGetResponse(String employeeId) {
+
+        this.deleteEmployeeById(employeeId);
+
+        LOG.debug("Deleted the Employee data. employeeId: {}", employeeId.toLowerCase());
+
+        // Producing message into Kafka topic
+        this.employeeKafkaProducerService.sendMessage(
+                EmployeeEntity.builder().employeeId(employeeId.toLowerCase()).build(), EmployeeEventType.DELETED);
+
+        return buildEmployeeResponseDto(employeeId, ApiResponseMessage.EMP_DELETE_MESSAGE.getValue());
+    }
+
+    @Override
     public Optional<EmployeeEntity> getEmployeeById(final String employeeId) {
 
         if(!StringUtils.hasText(employeeId)) {
@@ -190,6 +239,32 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return this.employeeEntityRepository.findByEmail(email.toLowerCase());
+    }
+
+    @Override
+    public EmployeeDetailsResponseDto getEmployeeDetailsById(final String employeeId) {
+
+        if(!StringUtils.hasText(employeeId)) {
+
+            throw new TakeAwayClientRuntimeException("The employeeId must not be null or empty");
+        }
+
+        EmployeeEntity employeeEntity = this.getEmployeeById(employeeId).orElseThrow(EmployeeNotFoundException::new);
+
+        LOG.debug("Building EmployeeDetailsResponseDto");
+
+        return EmployeeDetailsResponseDto.builder()
+                .employeeId(employeeEntity.getEmployeeId())
+                .name(employeeEntity.getName())
+                .email(employeeEntity.getEmail())
+                .dataOfBirth(employeeEntity.getDateOfBirth())
+                .department(DepartmentDto.builder()
+                        .departmentId(employeeEntity.getDepartmentEntity().getDepartId())
+                        .name(employeeEntity.getDepartmentEntity().getName())
+                        .build())
+                .createAt(employeeEntity.getCreatedAt())
+                .lastUpdatedAt(employeeEntity.getUpdatedAt())
+                .build();
     }
 
     private EmployeeEntity updateEmployeeAttribute(final EmployeeEntity employeeEntity,
@@ -213,5 +288,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeEntity.setUpdatedAt(ZonedDateTime.now());
 
         return employeeEntity;
+    }
+
+    private EmployeeResponseDto buildEmployeeResponseDto(final String employeeId, final String message) {
+
+        return EmployeeResponseDto.builder()
+                .employeeId(employeeId)
+                .message(message).build();
     }
 }
