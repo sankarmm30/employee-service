@@ -1,7 +1,11 @@
 package com.takeaway.challenge.service;
 
+import com.takeaway.challenge.EmployeeEventType;
+import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.EmployeeRequestDto;
 import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
+import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
+import com.takeaway.challenge.dto.response.EmployeeResponseDto;
 import com.takeaway.challenge.exception.DepartmentNotFoundException;
 import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
 import com.takeaway.challenge.exception.EmployeeNotFoundException;
@@ -43,13 +47,15 @@ public class EmployeeServiceImplTest {
     private EmployeeEntityRepository employeeEntityRepository;
     @Mock
     private DepartmentService departmentService;
+    @Mock
+    private KafkaProducerService employeeKafkaProducerService;
 
     private ValidationFactoryService validationFactoryService = new ValidationFactoryService(
             Validation.buildDefaultValidatorFactory().getValidator());
 
     @InjectMocks
     EmployeeService employeeService = new EmployeeServiceImpl(employeeEntityRepository, departmentService,
-            validationFactoryService);
+            validationFactoryService, employeeKafkaProducerService);
 
     @Before
     public void init() {
@@ -63,6 +69,9 @@ public class EmployeeServiceImplTest {
         Mockito.when(employeeEntityRepository.save(Mockito.any(EmployeeEntity.class))).thenReturn(getEmployeeEntity());
 
         Mockito.doNothing().when(employeeEntityRepository).delete(Mockito.any(EmployeeEntity.class));
+
+        Mockito.doNothing().when(employeeKafkaProducerService).sendMessage(Mockito.any(EmployeeEntity.class),
+                Mockito.any(EmployeeEventType.class));
     }
 
     @Test
@@ -119,6 +128,18 @@ public class EmployeeServiceImplTest {
                 .thenThrow(new IllegalStateException("Test Exception"));
 
         employeeService.createEmployee(getEmployeeRequestDto());
+    }
+
+    @Test
+    public void testCreateEmployeeAndGetResponseValid() {
+
+        Mockito.when(employeeEntityRepository.findByEmail(Mockito.eq(EMP_EMAIL))).thenReturn(Optional.empty());
+
+        EmployeeResponseDto employeeResponseDto = employeeService.createEmployeeAndGetResponse(getEmployeeRequestDto());
+
+        Assert.assertNotNull(employeeResponseDto);
+        Assert.assertEquals(EMP_ID, employeeResponseDto.getEmployeeId());
+        Assert.assertEquals(ApiResponseMessage.EMP_CREATE_MESSAGE.getValue(), employeeResponseDto.getMessage());
     }
 
     @Test
@@ -215,6 +236,19 @@ public class EmployeeServiceImplTest {
     }
 
     @Test
+    public void testUpdateEmployeeAndGetResponseValid() {
+
+        Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
+
+        EmployeeResponseDto employeeResponseDto = employeeService.updateEmployeeAndGetResponse(EMP_ID,
+                getPutEmployeeRequestDto(EMP_NAME, EMP_EMAIL, LocalDate.now(), DEPART_ID));
+
+        Assert.assertNotNull(employeeResponseDto);
+        Assert.assertEquals(EMP_ID, employeeResponseDto.getEmployeeId());
+        Assert.assertEquals(ApiResponseMessage.EMP_UPDATE_MESSAGE.getValue(), employeeResponseDto.getMessage());
+    }
+
+    @Test
     public void testDeleteEmployeeByIdValid() {
 
         Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
@@ -247,6 +281,18 @@ public class EmployeeServiceImplTest {
                 .when(employeeEntityRepository).delete(Mockito.any(EmployeeEntity.class));
 
         employeeService.deleteEmployeeById(EMP_ID);
+    }
+
+    @Test
+    public void testDeleteEmployeeByIdAndGetResponseValid() {
+
+        Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
+
+        EmployeeResponseDto employeeResponseDto = employeeService.deleteEmployeeByIdAndGetResponse(EMP_ID);
+
+        Assert.assertNotNull(employeeResponseDto);
+        Assert.assertEquals(EMP_ID, employeeResponseDto.getEmployeeId());
+        Assert.assertEquals(ApiResponseMessage.EMP_DELETE_MESSAGE.getValue(), employeeResponseDto.getMessage());
     }
 
     @Test
@@ -283,6 +329,39 @@ public class EmployeeServiceImplTest {
         Optional<EmployeeEntity> employeeEntityOptional = employeeService.getEmployeeByEmail(null);
 
         Assert.assertFalse(employeeEntityOptional.isPresent());
+    }
+
+    @Test
+    public void testGetEmployeeDetailsByIdValid() {
+
+        Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
+
+        EmployeeDetailsResponseDto employeeDetailsResponseDto = employeeService.getEmployeeDetailsById(EMP_ID);
+
+        Assert.assertNotNull(employeeDetailsResponseDto);
+        Assert.assertEquals(EMP_ID, employeeDetailsResponseDto.getEmployeeId());
+    }
+
+    @Test(expected = EmployeeNotFoundException.class)
+    public void testGetEmployeeDetailsByIdWhenNoDataFound() {
+
+        // when
+        Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID)))
+                .thenReturn(Optional.empty());
+
+        employeeService.getEmployeeDetailsById(EMP_ID);
+    }
+
+    @Test(expected = TakeAwayClientRuntimeException.class)
+    public void testGetEmployeeDetailsByIdWhenEmployeeIdIsNull() {
+
+        employeeService.getEmployeeDetailsById(null);
+    }
+
+    @Test(expected = TakeAwayClientRuntimeException.class)
+    public void testGetEmployeeDetailsByIdWhenEmployeeIdIsEmpty() {
+
+        employeeService.getEmployeeDetailsById("");
     }
 
     private DepartmentEntity getDepartmentEntity() {

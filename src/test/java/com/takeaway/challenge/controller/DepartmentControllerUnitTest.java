@@ -1,10 +1,11 @@
 package com.takeaway.challenge.controller;
 
+import com.takeaway.challenge.constant.ApiResponseMessage;
 import com.takeaway.challenge.dto.request.DepartmentRequestDto;
+import com.takeaway.challenge.dto.response.DepartmentResponseDto;
 import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
 import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
 import com.takeaway.challenge.exception.advice.GenericExceptionHandlerAdvice;
-import com.takeaway.challenge.model.DepartmentEntity;
 import com.takeaway.challenge.service.DepartmentService;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -36,24 +37,19 @@ public class DepartmentControllerUnitTest {
     @InjectMocks
     private GenericExceptionHandlerAdvice genericExceptionHandlerAdvice;
 
-    @Mock
-    private DepartmentEntity departmentEntityMock;
-
     @Before
     public void init() {
 
         MockitoAnnotations.initMocks(this);
 
         RestAssuredMockMvc.standaloneSetup(departmentController, genericExceptionHandlerAdvice);
-
-        Mockito.when(departmentEntityMock.getDepartId()).thenReturn(DEPART_ID);
     }
 
     @Test
     public void testCreateDepartmentSuccess() {
 
-        Mockito.when(departmentService.createDepartment(Mockito.any(DepartmentRequestDto.class)))
-                .thenReturn(departmentEntityMock);
+        Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
+                .thenReturn(getDepartmentResponseDto());
 
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -70,8 +66,8 @@ public class DepartmentControllerUnitTest {
     @Test
     public void testCreateDepartmentWhenBadRequest() {
 
-        Mockito.when(departmentService.createDepartment(Mockito.any(DepartmentRequestDto.class)))
-                .thenReturn(departmentEntityMock);
+        Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
+                .thenReturn(getDepartmentResponseDto());
 
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -87,7 +83,7 @@ public class DepartmentControllerUnitTest {
     @Test
     public void testCreateDepartmentWhenUnexpectedException() {
 
-        Mockito.when(departmentService.createDepartment(Mockito.any(DepartmentRequestDto.class)))
+        Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
                 .thenThrow(new TakeAwayServerRuntimeException("Unexpected error"));
 
         RestAssuredMockMvc.given()
@@ -104,7 +100,7 @@ public class DepartmentControllerUnitTest {
     @Test
     public void testCreateDepartmentWhenClientRuntimeException() {
 
-        Mockito.when(departmentService.createDepartment(Mockito.any(DepartmentRequestDto.class)))
+        Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
                 .thenThrow(new TakeAwayClientRuntimeException("Unexpected error"));
 
         RestAssuredMockMvc.given()
@@ -121,7 +117,7 @@ public class DepartmentControllerUnitTest {
     @Test
     public void testCreateDepartmentWhenClientRuntimeExceptionWithCause() {
 
-        Mockito.when(departmentService.createDepartment(Mockito.any(DepartmentRequestDto.class)))
+        Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
                 .thenThrow(new TakeAwayClientRuntimeException("Unexpected error", new IllegalArgumentException()));
 
         RestAssuredMockMvc.given()
@@ -133,5 +129,13 @@ public class DepartmentControllerUnitTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .contentType(ContentType.JSON)
                 .body("", Matchers.aMapWithSize(5));
+    }
+
+    private DepartmentResponseDto getDepartmentResponseDto() {
+
+        return DepartmentResponseDto.builder()
+                .departmentId(DEPART_ID)
+                .message(ApiResponseMessage.DEP_CREATE_MESSAGE.getValue())
+                .build();
     }
 }

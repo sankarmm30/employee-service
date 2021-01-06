@@ -1,6 +1,7 @@
 package com.takeaway.challenge.service;
 
 import com.takeaway.challenge.dto.request.DepartmentRequestDto;
+import com.takeaway.challenge.dto.response.DepartmentResponseDto;
 import com.takeaway.challenge.model.DepartmentEntity;
 
 import java.util.Optional;
@@ -26,4 +27,13 @@ public interface DepartmentService {
      * @return
      */
     Optional<DepartmentEntity> getDepartmentById(final Long departmentId);
+
+    /**
+     * This method is in charge of creating Department based on the input provided
+     * and will return the DepartmentResponseDto
+     *
+     * @param departmentRequestDto
+     * @return
+     */
+    DepartmentResponseDto createDepartmentAndGetResponse(final DepartmentRequestDto departmentRequestDto);
 }
