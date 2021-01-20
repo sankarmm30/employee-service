@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "EmployeeEventValue",
-  "namespace": "com.takeaway.challenge",
+  "namespace": "com.sandemo.hrms",
   "doc": "Employee event value data model and description",
   "fields": [
     {

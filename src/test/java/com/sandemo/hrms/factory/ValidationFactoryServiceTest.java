@@ -1,7 +1,7 @@
-package com.takeaway.challenge.factory;
+package com.sandemo.hrms.factory;
 
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +10,9 @@ import org.junit.runners.JUnit4;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class ValidationFactoryServiceTest {
 
@@ -38,7 +41,7 @@ public class ValidationFactoryServiceTest {
         validationFactoryService.validObject(DepartmentRequestDto.builder().name(" ").build());
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testWhenInputObjectIsNull() {
 
         validationFactoryService.validObject(null);

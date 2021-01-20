@@ -1,4 +1,4 @@
-package com.takeaway.challenge.context;
+package com.sandemo.hrms.context;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Jackson context configuration
  */
 @Configuration

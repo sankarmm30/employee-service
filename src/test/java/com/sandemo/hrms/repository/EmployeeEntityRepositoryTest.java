@@ -1,7 +1,7 @@
-package com.takeaway.challenge.repository;
+package com.sandemo.hrms.repository;
 
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.model.EmployeeEntity;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest(excludeAutoConfiguration = FlywayAutoConfiguration.class)
 @PropertySource("classpath:application-test.properties")

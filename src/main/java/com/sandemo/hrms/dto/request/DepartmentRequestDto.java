@@ -1,4 +1,4 @@
-package com.takeaway.challenge.dto.request;
+package com.sandemo.hrms.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @Builder
 @Data
 @NoArgsConstructor

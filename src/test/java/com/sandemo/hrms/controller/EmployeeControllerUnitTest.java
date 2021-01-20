@@ -1,15 +1,15 @@
-package com.takeaway.challenge.controller;
+package com.sandemo.hrms.controller;
 
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.EmployeeRequestDto;
-import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentDto;
-import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
-import com.takeaway.challenge.dto.response.EmployeeResponseDto;
-import com.takeaway.challenge.exception.DepartmentNotFoundException;
-import com.takeaway.challenge.exception.EmployeeNotFoundException;
-import com.takeaway.challenge.exception.advice.GenericExceptionHandlerAdvice;
-import com.takeaway.challenge.service.EmployeeService;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.dto.request.EmployeeRequestDto;
+import com.sandemo.hrms.dto.request.PutEmployeeRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentDto;
+import com.sandemo.hrms.dto.response.EmployeeDetailsResponseDto;
+import com.sandemo.hrms.dto.response.EmployeeResponseDto;
+import com.sandemo.hrms.exception.DepartmentNotFoundException;
+import com.sandemo.hrms.exception.EmployeeNotFoundException;
+import com.sandemo.hrms.exception.advice.GenericExceptionHandlerAdvice;
+import com.sandemo.hrms.service.EmployeeService;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.hamcrest.Matchers;
@@ -26,6 +26,9 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class EmployeeControllerUnitTest {
 

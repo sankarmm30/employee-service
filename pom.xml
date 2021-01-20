@@ -7,10 +7,10 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.5.RELEASE</version>
     </parent>
-    <groupId>com.takeaway.challenge</groupId>
-    <artifactId>bob-challenge-employee-service</artifactId>
+    <groupId>com.sandemo.hrms</groupId>
+    <artifactId>employee-service</artifactId>
     <version>1.0.0</version>
-    <name>bob-challenge-employee-service</name>
+    <name>employee-service</name>
     <description>The employee service is responsible for managing the employees data</description>
 
     <properties>
@@ -30,7 +30,7 @@
         <avro.version>1.8.2</avro.version>
         <kafka-avro-serializer.version>5.2.2</kafka-avro-serializer.version>
         <spring-kafka.version>2.5.7.RELEASE</spring-kafka.version>
-        <base.package>com/takeaway/challenge</base.package>
+        <base.package>com/sandemo/hrms</base.package>
         <spring-mock-mvc.version>3.3.0</spring-mock-mvc.version>
         <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
         <flyway.version>6.4.4</flyway.version>
@@ -172,7 +172,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.takeaway.challenge.EmployeeServiceApp</mainClass>
+                    <mainClass>com.sandemo.hrms.EmployeeServiceApp</mainClass>
                 </configuration>
             </plugin>
             <plugin>

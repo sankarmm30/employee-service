@@ -1,14 +1,14 @@
-package com.takeaway.challenge.service.impl;
+package com.sandemo.hrms.service.impl;
 
-import com.takeaway.challenge.EmployeeEventData;
-import com.takeaway.challenge.EmployeeEventKey;
-import com.takeaway.challenge.EmployeeEventType;
-import com.takeaway.challenge.EmployeeEventValue;
-import com.takeaway.challenge.constant.GlobalConstant;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.model.EmployeeEntity;
-import com.takeaway.challenge.service.KafkaProducerService;
-import com.takeaway.challenge.util.Util;
+import com.sandemo.hrms.model.EmployeeEntity;
+import com.sandemo.hrms.service.KafkaProducerService;
+import com.sandemo.hrms.util.Util;
+import com.sandemo.hrms.EmployeeEventData;
+import com.sandemo.hrms.EmployeeEventKey;
+import com.sandemo.hrms.EmployeeEventType;
+import com.sandemo.hrms.EmployeeEventValue;
+import com.sandemo.hrms.constant.GlobalConstant;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,8 @@ import javax.annotation.PostConstruct;
 import java.time.ZonedDateTime;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * This service is in charge of producing employee Kafka event
  */
 @Service("employeeKafkaProducerService")
@@ -53,7 +55,7 @@ public class EmployeeKafkaProducerServiceImpl implements KafkaProducerService {
 
         if(Util.isNull(employeeEntity) || Util.isNull(employeeEventType)) {
 
-            throw new TakeAwayServerRuntimeException("The method argument must not be null");
+            throw new GenericServerRuntimeException("The method argument must not be null");
         }
 
         this.kafkaTemplate.send(employeeEventTopic,

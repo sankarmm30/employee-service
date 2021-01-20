@@ -1,6 +1,8 @@
-package com.takeaway.challenge.constant;
+package com.sandemo.hrms.constant;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Global constants
  */
 public class GlobalConstant {

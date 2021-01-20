@@ -1,4 +1,4 @@
-package com.takeaway.challenge.model;
+package com.sandemo.hrms.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @Entity
 @Builder
 @Getter

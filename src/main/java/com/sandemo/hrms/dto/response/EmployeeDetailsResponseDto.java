@@ -1,8 +1,8 @@
-package com.takeaway.challenge.dto.response;
+package com.sandemo.hrms.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.takeaway.challenge.constant.GlobalConstant;
+import com.sandemo.hrms.constant.GlobalConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @Data
 @Builder
 @AllArgsConstructor

@@ -1,6 +1,6 @@
-package com.takeaway.challenge.util;
+package com.sandemo.hrms.util;
 
-import com.takeaway.challenge.constant.GlobalConstant;
+import com.sandemo.hrms.constant.GlobalConstant;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class UtilTest {
 

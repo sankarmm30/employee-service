@@ -1,8 +1,8 @@
-package com.takeaway.challenge.dto.request;
+package com.sandemo.hrms.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.takeaway.challenge.constant.GlobalConstant;
-import com.takeaway.challenge.util.Util;
+import com.sandemo.hrms.constant.GlobalConstant;
+import com.sandemo.hrms.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +15,9 @@ import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @Builder
 @Data
 @NoArgsConstructor

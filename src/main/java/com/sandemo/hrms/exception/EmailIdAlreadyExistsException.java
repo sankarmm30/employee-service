@@ -1,6 +1,9 @@
-package com.takeaway.challenge.exception;
+package com.sandemo.hrms.exception;
 
-public class EmailIdAlreadyExistsException extends TakeAwayClientRuntimeException {
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
+public class EmailIdAlreadyExistsException extends GenericClientRuntimeException {
 
     public static final String MESSAGE = "Email id is already exists";
 

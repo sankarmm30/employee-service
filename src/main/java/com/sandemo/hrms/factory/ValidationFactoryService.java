@@ -1,7 +1,7 @@
-package com.takeaway.challenge.factory;
+package com.sandemo.hrms.factory;
 
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.util.Util;
+import com.sandemo.hrms.util.Util;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,8 @@ import javax.validation.Validator;
 import java.util.Set;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * This factory service provides method for validating the bean in programmatically
  */
 @Service("validationFactoryService")
@@ -46,7 +48,7 @@ public class ValidationFactoryService {
             }
         } else {
 
-            throw new TakeAwayClientRuntimeException("The object to be validated must not be null.");
+            throw new GenericClientRuntimeException("The object to be validated must not be null.");
         }
     }
 }

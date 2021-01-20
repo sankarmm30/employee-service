@@ -1,12 +1,14 @@
-package com.takeaway.challenge.service;
+package com.sandemo.hrms.service;
 
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentResponseDto;
-import com.takeaway.challenge.model.DepartmentEntity;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentResponseDto;
+import com.sandemo.hrms.model.DepartmentEntity;
 
 import java.util.Optional;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * This interface is in charge of managing the Department data
  */
 public interface DepartmentService {

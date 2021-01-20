@@ -1,8 +1,8 @@
-package com.takeaway.challenge.controller;
+package com.sandemo.hrms.controller;
 
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentResponseDto;
-import com.takeaway.challenge.service.DepartmentService;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentResponseDto;
+import com.sandemo.hrms.service.DepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RestController("departmentController")
 @RequestMapping(value = "/department")
 @Api(value = "Department controller", description = "This controller provides endpoint for managing the department of the company")

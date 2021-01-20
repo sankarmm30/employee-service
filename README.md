@@ -32,10 +32,16 @@
 
 ### Setup Local Environment
 
+**Note:** You will see compilation errors when you open the projects for the very first time, that is because of `Auto generated` (AVRO) classes and those will get generated while building the project.  
+
+- *Prerequisites*
+    - Java (JDK) 1.8
+    - Apache Maven 3.6.3
+    - Docker (Version: 2.5.0.1)
 - *Ensure that below listed directories are empty,*
     - `local/db/data` - The data directory for postgres database.
     - `local/pgadmin-data` - The data directory for PgAdmin (UI for managing postgres database)
-- *Go the "local" folder and execute `docker-compose up -d` and this will create the below containers,*
+- *Go into "local" folder and execute `docker-compose up -d` and this will create the below containers,*
 
 ```
 PORTS                                        NAMES
@@ -56,15 +62,15 @@ PORTS                                        NAMES
     - Connnect to Server then verify the `empdb` under "Databases"
 - *Create Kafka Topic through [Kafdrop-UI](http://localhost:9100/)*
     - Click "New" under "Topics" section
-        - Name should be `takeway_employee_updates`
+        - Name should be `employee_updates`
         - Partition: 2 and Replication Factor: 1
 - *Register AVRO Schema through [Schema Registry UI](http://localhost:8060/)*
     - Register Key Schema
-        - Click on "New" and enter name: `takeway_employee_updates-com.takeaway.challenge.EmployeeEventKey`
+        - Click on "New" and enter name: `employee_updates-com.sandemo.hrms.EmployeeEventKey`
         - Copy and paste the content from file `src/main/avro/EmployeeEventKey.avsc`
         - Click on "Validate" and then "Create New Schema"
     - Register Value Schema
-        - Click on "New" and enter name: `takeway_employee_updates-com.takeaway.challenge.EmployeeEventValue`
+        - Click on "New" and enter name: `employee_updates-com.sandemo.hrms.EmployeeEventValue`
         - Copy and paste the content from file `src/main/avro/EmployeeEventValue.avsc`
         - Click on "Validate" and then "Create New Schema"
     
@@ -80,32 +86,30 @@ mvn clean install
 mvn clean install -DskipTests
 ```
 
-**Note:** You will see compilation errors when you open the projects for the very first time, that is because of `Auto generated` classes and the errors will disappear after building the project.  
-
 ## Run as Docker Container
 
 - Build the docker image in local by executing the below command from project folder,
 
 ```bash
-docker build . --tag=takeaway/bob-challenge-employee-service:1.0.0
+docker build . --tag=sankarmm30/employee-service:1.0.0
 
 # Execute the below command when you want to push the image to docker registry
 
-docker push takeaway/bob-challenge-employee-service:1.0.0
+docker push sankarmm30/employee-service:1.0.0
 ```
 
 - Verify the docker image by executing `docker image ls`
 - Execute command: `docker-compose up -d` which will create docker container with name: `employee-service`
-- Please visit [Swagger-UI](http://localhost:8070/takeaway/swagger-ui/index.html) for knowing more about Employee Service APIs. 
+- Please visit [Swagger-UI](http://localhost:8070/sandemo/swagger-ui/index.html) for knowing more about Employee Service APIs. 
 
 ## Run in Local (In command line)
 
 - Execute the below command after building the project successfully
 
 ```bash
-java -jar -Dlogging.config=classpath:logback-local.xml -Dspring.profiles.active=local bob-challenge-employee-service-1.0.0.jar
+java -jar -Dlogging.config=classpath:logback-local.xml -Dspring.profiles.active=local employee-service-1.0.0.jar
 ```
-- Please visit [Swagger-UI](http://localhost:8070/takeaway/swagger-ui/index.html) for knowing more about Employee Service APIs. 
+- Please visit [Swagger-UI](http://localhost:8070/sandemo/swagger-ui/index.html) for knowing more about Employee Service APIs. 
 
 ## Database Migration
 
@@ -118,6 +122,6 @@ java -jar -Dlogging.config=classpath:logback-local.xml -Dspring.profiles.active=
 
 - In case you want to **recreate the database**, then simply delete all data from folders: `local/db/data` & `local/pgadmin-data` and execute `docker-compose up -d`
 - In case you want to **view Kafka Messages**, then please visit to [Kafdrop-UI](http://localhost:9100)
-    - Click on topic name: `takeway_employee_updates` under "Topics" section
+    - Click on topic name: `employee_updates` under "Topics" section
     - Click on "View Messages" -> Select key format as "AVRO" and value format as "AVRO" then submit "View Messages"
     - Please change the "Partition" number if in case you want to see particular partition messages.

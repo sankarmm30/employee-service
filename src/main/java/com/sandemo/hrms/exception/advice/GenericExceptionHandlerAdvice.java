@@ -1,11 +1,11 @@
-package com.takeaway.challenge.exception.advice;
+package com.sandemo.hrms.exception.advice;
 
-import com.takeaway.challenge.dto.response.GenericExceptionResponse;
-import com.takeaway.challenge.exception.DepartmentNotFoundException;
-import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
-import com.takeaway.challenge.exception.EmployeeNotFoundException;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
+import com.sandemo.hrms.dto.response.GenericExceptionResponse;
+import com.sandemo.hrms.exception.DepartmentNotFoundException;
+import com.sandemo.hrms.exception.EmailIdAlreadyExistsException;
+import com.sandemo.hrms.exception.EmployeeNotFoundException;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RestController
 @ControllerAdvice
 public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
@@ -39,7 +42,7 @@ public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandle
      */
     @ExceptionHandler({EmployeeNotFoundException.class, DepartmentNotFoundException.class})
     public final ResponseEntity<GenericExceptionResponse> handleEmployeeNotFoundException(
-            TakeAwayClientRuntimeException exception, HttpServletRequest request) {
+            GenericClientRuntimeException exception, HttpServletRequest request) {
 
         return new ResponseEntity<>(
                 GenericExceptionResponse.builder()
@@ -61,7 +64,7 @@ public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandle
      */
     @ExceptionHandler(EmailIdAlreadyExistsException.class)
     public final ResponseEntity<GenericExceptionResponse> handleEmailIdAlreadyExistsException(
-            TakeAwayClientRuntimeException exception, HttpServletRequest request) {
+            GenericClientRuntimeException exception, HttpServletRequest request) {
 
         return new ResponseEntity<>(
                 GenericExceptionResponse.builder()
@@ -136,9 +139,9 @@ public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandle
      * @param request the HttpServletRequest
      * @return the response entity
      */
-    @ExceptionHandler(TakeAwayClientRuntimeException.class)
-    public final ResponseEntity<GenericExceptionResponse> handleTakeAwayClientRuntimeException(
-            TakeAwayClientRuntimeException exception, HttpServletRequest request) {
+    @ExceptionHandler(GenericClientRuntimeException.class)
+    public final ResponseEntity<GenericExceptionResponse> handleClientRuntimeException(
+            GenericClientRuntimeException exception, HttpServletRequest request) {
 
         return new ResponseEntity<>(
                 GenericExceptionResponse.builder()
@@ -158,9 +161,9 @@ public class GenericExceptionHandlerAdvice extends ResponseEntityExceptionHandle
      * @param request the HttpServletRequest
      * @return the response entity
      */
-    @ExceptionHandler(TakeAwayServerRuntimeException.class)
-    public final ResponseEntity<GenericExceptionResponse> handleTakeAwayServerRuntimeException(
-            TakeAwayServerRuntimeException exception, HttpServletRequest request) {
+    @ExceptionHandler(GenericServerRuntimeException.class)
+    public final ResponseEntity<GenericExceptionResponse> handleServerRuntimeException(
+            GenericServerRuntimeException exception, HttpServletRequest request) {
 
         return new ResponseEntity<>(
                 GenericExceptionResponse.builder()

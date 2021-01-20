@@ -1,6 +1,8 @@
-package com.takeaway.challenge.constant;
+package com.sandemo.hrms.constant;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * This enum holds the messages that are send over api response for both success or error cases
  */
 public enum ApiResponseMessage {

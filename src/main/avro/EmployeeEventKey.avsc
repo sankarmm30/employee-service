@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "EmployeeEventKey",
-  "namespace": "com.takeaway.challenge",
+  "namespace": "com.sandemo.hrms",
   "doc": "Employee event key data model and description",
   "fields": [
     {

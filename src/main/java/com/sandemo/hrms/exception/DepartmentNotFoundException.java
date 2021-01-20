@@ -1,6 +1,9 @@
-package com.takeaway.challenge.exception;
+package com.sandemo.hrms.exception;
 
-public class DepartmentNotFoundException extends TakeAwayClientRuntimeException {
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
+public class DepartmentNotFoundException extends GenericClientRuntimeException {
 
     public static final String MESSAGE = "Could not find the department in the database";
 

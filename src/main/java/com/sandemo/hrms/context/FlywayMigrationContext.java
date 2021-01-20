@@ -1,4 +1,4 @@
-package com.takeaway.challenge.context;
+package com.sandemo.hrms.context;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.ClassicConfiguration;
@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Bean configuration for flyway database migration
  */
 @Configuration

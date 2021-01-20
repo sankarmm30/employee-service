@@ -1,10 +1,12 @@
-package com.takeaway.challenge.context;
+package com.sandemo.hrms.context;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Configuring logging request filter that writes the request URI
  * to the Commons Log.
  */

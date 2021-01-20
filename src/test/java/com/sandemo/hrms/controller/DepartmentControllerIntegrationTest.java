@@ -1,10 +1,10 @@
-package com.takeaway.challenge.controller;
+package com.sandemo.hrms.controller;
 
-import com.takeaway.challenge.EmployeeServiceApp;
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentResponseDto;
-import com.takeaway.challenge.dto.response.GenericExceptionResponse;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentResponseDto;
+import com.sandemo.hrms.dto.response.GenericExceptionResponse;
+import com.sandemo.hrms.EmployeeServiceApp;
 import org.flywaydb.core.Flyway;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,13 +22,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EmployeeServiceApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class DepartmentControllerIntegrationTest {
 
     private static final String BASE_URL = "http://localhost:";
-    private static final String CREATE_DEPART_URL = "/takeaway/department/create";
+    private static final String CREATE_DEPART_URL = "/sandemo/department/create";
     private static final String DEPART_NAME = "HR";
 
     private TestRestTemplate restTemplate = new TestRestTemplate();

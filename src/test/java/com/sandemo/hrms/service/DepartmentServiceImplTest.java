@@ -1,13 +1,13 @@
-package com.takeaway.challenge.service;
+package com.sandemo.hrms.service;
 
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentResponseDto;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.factory.ValidationFactoryService;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.repository.DepartmentEntityRepository;
-import com.takeaway.challenge.service.impl.DepartmentServiceImpl;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentResponseDto;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
+import com.sandemo.hrms.factory.ValidationFactoryService;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.repository.DepartmentEntityRepository;
+import com.sandemo.hrms.service.impl.DepartmentServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +22,9 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import java.util.Optional;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class DepartmentServiceImplTest {
 
@@ -65,13 +68,13 @@ public class DepartmentServiceImplTest {
                 DepartmentRequestDto.builder().name(null).build());
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testCreateDepartmentWhenInputParamIsNull() {
 
         departmentService.createDepartment(null);
     }
 
-    @Test(expected = TakeAwayServerRuntimeException.class)
+    @Test(expected = GenericServerRuntimeException.class)
     public void testCreateDepartmentWhenUnexpectedException() {
 
         Mockito.when(departmentEntityRepository.save(Mockito.any(DepartmentEntity.class)))
@@ -115,7 +118,7 @@ public class DepartmentServiceImplTest {
         Assert.assertEquals(ID, departmentResponseDto.getDepartmentId());
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testCreateDepartmentAndGetResponseWhenInputParamIsNull() {
 
         departmentService.createDepartmentAndGetResponse(null);
