@@ -1,21 +1,21 @@
-package com.takeaway.challenge.service;
+package com.sandemo.hrms.service;
 
-import com.takeaway.challenge.EmployeeEventType;
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.EmployeeRequestDto;
-import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
-import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
-import com.takeaway.challenge.dto.response.EmployeeResponseDto;
-import com.takeaway.challenge.exception.DepartmentNotFoundException;
-import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
-import com.takeaway.challenge.exception.EmployeeNotFoundException;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.factory.ValidationFactoryService;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.model.EmployeeEntity;
-import com.takeaway.challenge.repository.EmployeeEntityRepository;
-import com.takeaway.challenge.service.impl.EmployeeServiceImpl;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.dto.request.EmployeeRequestDto;
+import com.sandemo.hrms.dto.request.PutEmployeeRequestDto;
+import com.sandemo.hrms.dto.response.EmployeeDetailsResponseDto;
+import com.sandemo.hrms.dto.response.EmployeeResponseDto;
+import com.sandemo.hrms.exception.DepartmentNotFoundException;
+import com.sandemo.hrms.exception.EmailIdAlreadyExistsException;
+import com.sandemo.hrms.exception.EmployeeNotFoundException;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
+import com.sandemo.hrms.factory.ValidationFactoryService;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
+import com.sandemo.hrms.repository.EmployeeEntityRepository;
+import com.sandemo.hrms.service.impl.EmployeeServiceImpl;
+import com.sandemo.hrms.EmployeeEventType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +32,9 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class EmployeeServiceImplTest {
 
@@ -102,7 +105,7 @@ public class EmployeeServiceImplTest {
         employeeService.createEmployee(getEmployeeRequestDto());
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testCreateEmployeeWhenEmployeeRequestIsNull() {
 
         employeeService.createEmployee(null);
@@ -119,7 +122,7 @@ public class EmployeeServiceImplTest {
                 .build());
     }
 
-    @Test(expected = TakeAwayServerRuntimeException.class)
+    @Test(expected = GenericServerRuntimeException.class)
     public void testCreateEmployeeWhenUnexpectedException() {
 
         Mockito.when(employeeEntityRepository.findByEmail(Mockito.eq(EMP_EMAIL))).thenReturn(Optional.empty());
@@ -196,13 +199,13 @@ public class EmployeeServiceImplTest {
         employeeService.updateEmployee(EMP_ID, getPutEmployeeRequestDto(EMP_NAME, null, null, null));
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testUpdateEmployeeWhenEmployeeIdIsNull() {
 
         employeeService.updateEmployee(null, getPutEmployeeRequestDto(EMP_NAME, null, null, null));
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testUpdateEmployeeWhenRequestDtoIsNull() {
 
         employeeService.updateEmployee(EMP_ID, null);
@@ -224,7 +227,7 @@ public class EmployeeServiceImplTest {
         employeeService.updateEmployee(EMP_ID, getPutEmployeeRequestDto(null, null, null, DEPART_ID));
     }
 
-    @Test(expected = TakeAwayServerRuntimeException.class)
+    @Test(expected = GenericServerRuntimeException.class)
     public void testUpdateEmployeeWhenUnexpectedException() {
 
         Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
@@ -266,13 +269,13 @@ public class EmployeeServiceImplTest {
         Assert.assertTrue("Always True", true);
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testDeleteEmployeeByIdWhenInputEmployeeIdIsNull() {
 
         employeeService.deleteEmployeeById(null);
     }
 
-    @Test(expected = TakeAwayServerRuntimeException.class)
+    @Test(expected = GenericServerRuntimeException.class)
     public void testDeleteEmployeeByIdWhenUnexpectedException() {
 
         Mockito.when(employeeEntityRepository.findByEmployeeId(Mockito.eq(EMP_ID))).thenReturn(Optional.of(getEmployeeEntity()));
@@ -352,13 +355,13 @@ public class EmployeeServiceImplTest {
         employeeService.getEmployeeDetailsById(EMP_ID);
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testGetEmployeeDetailsByIdWhenEmployeeIdIsNull() {
 
         employeeService.getEmployeeDetailsById(null);
     }
 
-    @Test(expected = TakeAwayClientRuntimeException.class)
+    @Test(expected = GenericClientRuntimeException.class)
     public void testGetEmployeeDetailsByIdWhenEmployeeIdIsEmpty() {
 
         employeeService.getEmployeeDetailsById("");

@@ -1,11 +1,14 @@
-package com.takeaway.challenge.repository;
+package com.sandemo.hrms.repository;
 
-import com.takeaway.challenge.model.EmployeeEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @Repository
 public interface EmployeeEntityRepository extends JpaRepository<EmployeeEntity, Long> {
 

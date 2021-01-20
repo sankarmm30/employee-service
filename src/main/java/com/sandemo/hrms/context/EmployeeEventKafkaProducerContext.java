@@ -1,7 +1,7 @@
-package com.takeaway.challenge.context;
+package com.sandemo.hrms.context;
 
-import com.takeaway.challenge.EmployeeEventKey;
-import com.takeaway.challenge.EmployeeEventValue;
+import com.sandemo.hrms.EmployeeEventKey;
+import com.sandemo.hrms.EmployeeEventValue;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Avro Producer Configuration for Employee Event
  */
 @Configuration

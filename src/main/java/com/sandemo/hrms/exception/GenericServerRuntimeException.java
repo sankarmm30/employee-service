@@ -1,12 +1,15 @@
 package com.sandemo.hrms.exception;
 
-public class TakeAwayServerRuntimeException extends TakeAwayRuntimeException {
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
+public class GenericServerRuntimeException extends GenericRuntimeException {
 
-    public TakeAwayServerRuntimeException(String message) {
+    public GenericServerRuntimeException(String message) {
         super(message);
     }
 
-    public TakeAwayServerRuntimeException(String message, Throwable cause) {
+    public GenericServerRuntimeException(String message, Throwable cause) {
         super(message, cause);
     }
 }

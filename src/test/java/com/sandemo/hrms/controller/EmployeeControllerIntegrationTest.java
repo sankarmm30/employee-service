@@ -1,15 +1,15 @@
-package com.takeaway.challenge.controller;
+package com.sandemo.hrms.controller;
 
-import com.takeaway.challenge.EmployeeServiceApp;
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.EmployeeRequestDto;
-import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
-import com.takeaway.challenge.dto.response.EmployeeResponseDto;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.model.EmployeeEntity;
-import com.takeaway.challenge.repository.DepartmentEntityRepository;
-import com.takeaway.challenge.repository.EmployeeEntityRepository;
-import com.takeaway.challenge.service.KafkaProducerService;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.dto.request.EmployeeRequestDto;
+import com.sandemo.hrms.dto.response.EmployeeDetailsResponseDto;
+import com.sandemo.hrms.dto.response.EmployeeResponseDto;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
+import com.sandemo.hrms.repository.DepartmentEntityRepository;
+import com.sandemo.hrms.repository.EmployeeEntityRepository;
+import com.sandemo.hrms.service.KafkaProducerService;
+import com.sandemo.hrms.EmployeeServiceApp;
 import org.flywaydb.core.Flyway;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,16 +33,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EmployeeServiceApp.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class EmployeeControllerIntegrationTest {
 
     private static final String BASE_URL = "http://localhost:";
-    private static final String CREATE_EMP_URL = "/takeaway/employee/create";
-    private static final String UPDATE_EMP_URL = "/takeaway/employee/update/";
-    private static final String DELETE_EMP_URL = "/takeaway/employee/delete/";
-    private static final String GET_EMP_URL = "/takeaway/employee/details?employeeId=";
+    private static final String CREATE_EMP_URL = "/sandemo/employee/create";
+    private static final String UPDATE_EMP_URL = "/sandemo/employee/update/";
+    private static final String DELETE_EMP_URL = "/sandemo/employee/delete/";
+    private static final String GET_EMP_URL = "/sandemo/employee/details?employeeId=";
     private static final String DEPART_NAME = "HR";
     private static final String EMPLOYEE_ID = "testid1";
     private static final String EMPLOYEE_NAME = "testname1";

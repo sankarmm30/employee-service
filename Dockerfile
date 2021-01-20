@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-ARG JAR_FILE=target/bob-challenge-employee-service*.jar
+ARG JAR_FILE=target/employee-service*.jar
 ENV JAVA_OPTS=""
 
 COPY ${JAR_FILE} app.jar

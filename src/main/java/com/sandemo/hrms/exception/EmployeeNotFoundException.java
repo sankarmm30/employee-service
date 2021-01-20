@@ -1,6 +1,9 @@
-package com.takeaway.challenge.exception;
+package com.sandemo.hrms.exception;
 
-public class EmployeeNotFoundException extends TakeAwayClientRuntimeException {
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
+public class EmployeeNotFoundException extends GenericClientRuntimeException {
 
     public static final String MESSAGE = "Could not find the employee in the database";
 

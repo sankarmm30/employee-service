@@ -1,12 +1,12 @@
-package com.takeaway.challenge.service;
+package com.sandemo.hrms.service;
 
-import com.takeaway.challenge.EmployeeEventKey;
-import com.takeaway.challenge.EmployeeEventType;
-import com.takeaway.challenge.EmployeeEventValue;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.model.EmployeeEntity;
-import com.takeaway.challenge.service.impl.EmployeeKafkaProducerServiceImpl;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
+import com.sandemo.hrms.service.impl.EmployeeKafkaProducerServiceImpl;
+import com.sandemo.hrms.EmployeeEventKey;
+import com.sandemo.hrms.EmployeeEventType;
+import com.sandemo.hrms.EmployeeEventValue;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +24,9 @@ import org.springframework.util.concurrent.ListenableFuture;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class EmployeeKafkaProducerServiceImplTest {
 
@@ -92,13 +95,13 @@ public class EmployeeKafkaProducerServiceImplTest {
         Assert.assertTrue("Always True", true);
     }
 
-    @Test(expected = TakeAwayServerRuntimeException.class)
+    @Test(expected = GenericServerRuntimeException.class)
     public void testSendMessageWhenEmployeeEntityIsNull() {
 
         employeeKafkaProducerService.sendMessage(null, EmployeeEventType.CREATED);
     }
 
-    @Test(expected = TakeAwayServerRuntimeException.class)
+    @Test(expected = GenericServerRuntimeException.class)
     public void testSendMessageWhenEmployeeEventTypeIsNull() {
 
         employeeKafkaProducerService.sendMessage(employeeEntityMock, null);

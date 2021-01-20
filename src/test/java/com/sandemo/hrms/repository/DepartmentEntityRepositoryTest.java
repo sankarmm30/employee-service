@@ -1,6 +1,6 @@
-package com.takeaway.challenge.repository;
+package com.sandemo.hrms.repository;
 
-import com.takeaway.challenge.model.DepartmentEntity;
+import com.sandemo.hrms.model.DepartmentEntity;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest(excludeAutoConfiguration = FlywayAutoConfiguration.class)
 @PropertySource("classpath:application-test.properties")

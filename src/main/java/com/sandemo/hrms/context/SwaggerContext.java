@@ -1,4 +1,4 @@
-package com.takeaway.challenge.context;
+package com.sandemo.hrms.context;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +11,15 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Configuration for enabling Springfox swagger 2 and mentioning spring where to scan for API controllers
  *
  */
 @Configuration
 public class SwaggerContext {
 
-    private static final String PACKAGE = "com.takeaway.challenge.controller";
+    private static final String PACKAGE = "com.sandemo.hrms.controller";
     private static final String REGEX = "/.*";
     private static final String API_NAME = "Employee Service REST API";
     private static final String DESC = "This service is responsible for handling the employees of a company";

@@ -1,12 +1,12 @@
-package com.takeaway.challenge.controller;
+package com.sandemo.hrms.controller;
 
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentResponseDto;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.exception.advice.GenericExceptionHandlerAdvice;
-import com.takeaway.challenge.service.DepartmentService;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentResponseDto;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
+import com.sandemo.hrms.exception.advice.GenericExceptionHandlerAdvice;
+import com.sandemo.hrms.service.DepartmentService;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.hamcrest.Matchers;
@@ -20,6 +20,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RunWith(JUnit4.class)
 public class DepartmentControllerUnitTest {
 
@@ -84,7 +87,7 @@ public class DepartmentControllerUnitTest {
     public void testCreateDepartmentWhenUnexpectedException() {
 
         Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
-                .thenThrow(new TakeAwayServerRuntimeException("Unexpected error"));
+                .thenThrow(new GenericServerRuntimeException("Unexpected error"));
 
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -101,7 +104,7 @@ public class DepartmentControllerUnitTest {
     public void testCreateDepartmentWhenClientRuntimeException() {
 
         Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
-                .thenThrow(new TakeAwayClientRuntimeException("Unexpected error"));
+                .thenThrow(new GenericClientRuntimeException("Unexpected error"));
 
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)
@@ -118,7 +121,7 @@ public class DepartmentControllerUnitTest {
     public void testCreateDepartmentWhenClientRuntimeExceptionWithCause() {
 
         Mockito.when(departmentService.createDepartmentAndGetResponse(Mockito.any(DepartmentRequestDto.class)))
-                .thenThrow(new TakeAwayClientRuntimeException("Unexpected error", new IllegalArgumentException()));
+                .thenThrow(new GenericClientRuntimeException("Unexpected error", new IllegalArgumentException()));
 
         RestAssuredMockMvc.given()
                 .contentType(ContentType.JSON)

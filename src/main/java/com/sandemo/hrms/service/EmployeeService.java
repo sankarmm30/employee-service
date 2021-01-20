@@ -1,14 +1,16 @@
-package com.takeaway.challenge.service;
+package com.sandemo.hrms.service;
 
-import com.takeaway.challenge.dto.request.EmployeeRequestDto;
-import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
-import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
-import com.takeaway.challenge.dto.response.EmployeeResponseDto;
-import com.takeaway.challenge.model.EmployeeEntity;
+import com.sandemo.hrms.dto.request.EmployeeRequestDto;
+import com.sandemo.hrms.dto.request.PutEmployeeRequestDto;
+import com.sandemo.hrms.dto.response.EmployeeDetailsResponseDto;
+import com.sandemo.hrms.dto.response.EmployeeResponseDto;
+import com.sandemo.hrms.model.EmployeeEntity;
 
 import java.util.Optional;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * This interface is in charge of managing the Employee data
  */
 public interface EmployeeService {

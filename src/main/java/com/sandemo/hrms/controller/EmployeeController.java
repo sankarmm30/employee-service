@@ -1,10 +1,10 @@
-package com.takeaway.challenge.controller;
+package com.sandemo.hrms.controller;
 
-import com.takeaway.challenge.dto.request.EmployeeRequestDto;
-import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
-import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
-import com.takeaway.challenge.dto.response.EmployeeResponseDto;
-import com.takeaway.challenge.service.EmployeeService;
+import com.sandemo.hrms.dto.request.EmployeeRequestDto;
+import com.sandemo.hrms.dto.request.PutEmployeeRequestDto;
+import com.sandemo.hrms.dto.response.EmployeeDetailsResponseDto;
+import com.sandemo.hrms.dto.response.EmployeeResponseDto;
+import com.sandemo.hrms.service.EmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ */
 @RestController
 @RequestMapping(value = "/employee")
 @Api(value = "Employee controller", description = "This controller provides endpoint for managing the employee of the company")

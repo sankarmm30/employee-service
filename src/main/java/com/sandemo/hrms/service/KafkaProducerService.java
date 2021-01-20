@@ -1,9 +1,11 @@
-package com.takeaway.challenge.service;
+package com.sandemo.hrms.service;
 
-import com.takeaway.challenge.EmployeeEventType;
-import com.takeaway.challenge.model.EmployeeEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
+import com.sandemo.hrms.EmployeeEventType;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * This interface is in charge of managing the Kafka producer functionality
  */
 public interface KafkaProducerService {

@@ -1,4 +1,4 @@
-package com.takeaway.challenge.context;
+package com.sandemo.hrms.context;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -6,6 +6,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
  * Swagger UI Configuration
  */
 public class SwaggerUiWebMvcConfiguration implements WebMvcConfigurer {

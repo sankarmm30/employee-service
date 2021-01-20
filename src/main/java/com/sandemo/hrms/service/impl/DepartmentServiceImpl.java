@@ -1,15 +1,15 @@
-package com.takeaway.challenge.service.impl;
+package com.sandemo.hrms.service.impl;
 
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.DepartmentRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentResponseDto;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.factory.ValidationFactoryService;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.repository.DepartmentEntityRepository;
-import com.takeaway.challenge.service.DepartmentService;
-import com.takeaway.challenge.util.Util;
+import com.sandemo.hrms.dto.request.DepartmentRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentResponseDto;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
+import com.sandemo.hrms.factory.ValidationFactoryService;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.service.DepartmentService;
+import com.sandemo.hrms.util.Util;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
+import com.sandemo.hrms.repository.DepartmentEntityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
+ * This service provides the methods which are used to manage the department
+ */
 @Service("departmentService")
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 public class DepartmentServiceImpl implements DepartmentService {
@@ -49,7 +54,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                     DepartmentEntity.builder()
                             .name(departmentRequestDto.getName()).build());
 
-        } catch (TakeAwayClientRuntimeException | ConstraintViolationException exception) {
+        } catch (GenericClientRuntimeException | ConstraintViolationException exception) {
 
             throw exception;
 
@@ -57,7 +62,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
             LOG.error("Exception while creating department",exception);
 
-            throw new TakeAwayServerRuntimeException("Unexpected error occurred", exception);
+            throw new GenericServerRuntimeException("Unexpected error occurred", exception);
         }
     }
 

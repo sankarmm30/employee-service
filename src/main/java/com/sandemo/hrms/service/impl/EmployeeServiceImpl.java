@@ -1,25 +1,25 @@
-package com.takeaway.challenge.service.impl;
+package com.sandemo.hrms.service.impl;
 
-import com.takeaway.challenge.EmployeeEventType;
-import com.takeaway.challenge.constant.ApiResponseMessage;
-import com.takeaway.challenge.dto.request.EmployeeRequestDto;
-import com.takeaway.challenge.dto.request.PutEmployeeRequestDto;
-import com.takeaway.challenge.dto.response.DepartmentDto;
-import com.takeaway.challenge.dto.response.EmployeeDetailsResponseDto;
-import com.takeaway.challenge.dto.response.EmployeeResponseDto;
-import com.takeaway.challenge.exception.DepartmentNotFoundException;
-import com.takeaway.challenge.exception.EmailIdAlreadyExistsException;
-import com.takeaway.challenge.exception.EmployeeNotFoundException;
-import com.takeaway.challenge.exception.TakeAwayClientRuntimeException;
-import com.takeaway.challenge.exception.TakeAwayServerRuntimeException;
-import com.takeaway.challenge.factory.ValidationFactoryService;
-import com.takeaway.challenge.model.DepartmentEntity;
-import com.takeaway.challenge.model.EmployeeEntity;
-import com.takeaway.challenge.repository.EmployeeEntityRepository;
-import com.takeaway.challenge.service.DepartmentService;
-import com.takeaway.challenge.service.EmployeeService;
-import com.takeaway.challenge.service.KafkaProducerService;
-import com.takeaway.challenge.util.Util;
+import com.sandemo.hrms.dto.request.EmployeeRequestDto;
+import com.sandemo.hrms.dto.request.PutEmployeeRequestDto;
+import com.sandemo.hrms.dto.response.DepartmentDto;
+import com.sandemo.hrms.dto.response.EmployeeDetailsResponseDto;
+import com.sandemo.hrms.dto.response.EmployeeResponseDto;
+import com.sandemo.hrms.model.DepartmentEntity;
+import com.sandemo.hrms.model.EmployeeEntity;
+import com.sandemo.hrms.service.DepartmentService;
+import com.sandemo.hrms.service.EmployeeService;
+import com.sandemo.hrms.service.KafkaProducerService;
+import com.sandemo.hrms.util.Util;
+import com.sandemo.hrms.EmployeeEventType;
+import com.sandemo.hrms.constant.ApiResponseMessage;
+import com.sandemo.hrms.exception.DepartmentNotFoundException;
+import com.sandemo.hrms.exception.EmailIdAlreadyExistsException;
+import com.sandemo.hrms.exception.EmployeeNotFoundException;
+import com.sandemo.hrms.exception.GenericClientRuntimeException;
+import com.sandemo.hrms.exception.GenericServerRuntimeException;
+import com.sandemo.hrms.factory.ValidationFactoryService;
+import com.sandemo.hrms.repository.EmployeeEntityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,11 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * @author Sankar M <sankar.mm30@gmail.com>
+ *
+ * This service provides the methods which are used to manage the employee data
+ */
 @Service("employeeService")
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
 public class EmployeeServiceImpl implements EmployeeService {
@@ -85,7 +90,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                             .createdAt(ZonedDateTime.now())
                             .build()
             );
-        } catch (TakeAwayClientRuntimeException | ConstraintViolationException exception) {
+        } catch (GenericClientRuntimeException | ConstraintViolationException exception) {
 
             throw exception;
 
@@ -93,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             LOG.error("Exception while creating employee",exception);
 
-            throw new TakeAwayServerRuntimeException("Unexpected error occurred", exception);
+            throw new GenericServerRuntimeException("Unexpected error occurred", exception);
         }
     }
 
@@ -118,7 +123,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             if(!StringUtils.hasText(employeeId)) {
 
-                throw new TakeAwayClientRuntimeException("The employeeId must not be null or empty for the update");
+                throw new GenericClientRuntimeException("The employeeId must not be null or empty for the update");
             }
 
             // Validating the input parameter
@@ -153,7 +158,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return this.employeeEntityRepository.save(
                     updateEmployeeAttribute(employeeEntity, putEmployeeRequestDto));
 
-        } catch (TakeAwayClientRuntimeException | ConstraintViolationException exception) {
+        } catch (GenericClientRuntimeException | ConstraintViolationException exception) {
 
             throw exception;
 
@@ -161,7 +166,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             LOG.error("Exception while updating employee",exception);
 
-            throw new TakeAwayServerRuntimeException("Unexpected error occurred while updating the employee record", exception);
+            throw new GenericServerRuntimeException("Unexpected error occurred while updating the employee record", exception);
         }
     }
 
@@ -186,14 +191,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             if(!StringUtils.hasText(employeeId)) {
 
-                throw new TakeAwayClientRuntimeException("The employeeId must not be null or empty for the delete");
+                throw new GenericClientRuntimeException("The employeeId must not be null or empty for the delete");
             }
 
             EmployeeEntity employeeEntity = getEmployeeById(employeeId).orElseThrow(EmployeeNotFoundException::new);
 
             this.employeeEntityRepository.delete(employeeEntity);
 
-        } catch (TakeAwayClientRuntimeException exception) {
+        } catch (GenericClientRuntimeException exception) {
 
             throw exception;
 
@@ -201,7 +206,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             LOG.error("Exception while deleting the employee",exception);
 
-            throw new TakeAwayServerRuntimeException("Unexpected error occurred while deleting the employee record", exception);
+            throw new GenericServerRuntimeException("Unexpected error occurred while deleting the employee record", exception);
         }
     }
 
@@ -246,7 +251,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if(!StringUtils.hasText(employeeId)) {
 
-            throw new TakeAwayClientRuntimeException("The employeeId must not be null or empty");
+            throw new GenericClientRuntimeException("The employeeId must not be null or empty");
         }
 
         EmployeeEntity employeeEntity = this.getEmployeeById(employeeId).orElseThrow(EmployeeNotFoundException::new);
