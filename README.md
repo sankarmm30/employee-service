@@ -91,11 +91,11 @@ mvn clean install -DskipTests
 - Build the docker image in local by executing the below command from project folder,
 
 ```bash
-docker build . --tag=sankarmm30/employee-service:1.0.0
+docker build . --tag=sandemo/employee-service:1.0.0
 
 # Execute the below command when you want to push the image to docker registry
 
-docker push sankarmm30/employee-service:1.0.0
+docker push sandemo/employee-service:1.0.0
 ```
 
 - Verify the docker image by executing `docker image ls`

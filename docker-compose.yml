@@ -1,7 +1,7 @@
 version: '3'
 services:
   employee-service:
-    image: sankarmm30/employee-service:1.0.0
+    image: sandemo/employee-service:1.0.0
     container_name: employee-service
     ports:
       - 8070:8070
