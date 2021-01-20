@@ -1,4 +1,4 @@
-package com.takeaway.challenge.exception;
+package com.sandemo.hrms.exception;
 
 public class TakeAwayRuntimeException extends RuntimeException {
 
