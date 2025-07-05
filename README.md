@@ -124,4 +124,4 @@ java -jar -Dlogging.config=classpath:logback-local.xml -Dspring.profiles.active=
 - In case you want to **view Kafka Messages**, then please visit to [Kafdrop-UI](http://localhost:9100)
     - Click on topic name: `employee_updates` under "Topics" section
     - Click on "View Messages" -> Select key format as "AVRO" and value format as "AVRO" then submit "View Messages"
-    - Please change the "Partition" number if in case you want to see particular partition messages.
+    - Please change the "Partition" number if in case you want to see particular partition message.s.
